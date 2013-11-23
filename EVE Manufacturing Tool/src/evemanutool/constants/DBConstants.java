@@ -159,7 +159,7 @@ public interface DBConstants {
 	public static final double SVR_SUSTAIN = 10;
 
 	//Updates.
-	public static final int MARKET_UPDATE_DELAY = 60 * 30 * 1000; //(millisec) --> 0.5h 
+	public static final int MARKET_UPDATE_DELAY = 5 * 60 * 1000; //(millisec) --> 5 min. 
 	public static final int MINIMUM_HISTORY_UPDATE_NEED = 3; //Days.
 
 	//Industry
