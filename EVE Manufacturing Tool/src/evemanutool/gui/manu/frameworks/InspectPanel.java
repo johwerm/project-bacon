@@ -71,7 +71,7 @@ public abstract class InspectPanel extends JPanel implements UserPrefConstants{
 	private NumberLabel profit = new NumberLabel(true, " ISK");
 	private NumberLabel profitAll = new NumberLabel(true, " ISK");
 	
-	private NumberLabel iskPerH = new NumberLabel(true, " ISK");
+	private NumberLabel profitPerH = new NumberLabel(true, " ISK");
 	private NumberLabel profitPercent = new NumberLabel(true, "%");
 	
 	//Listener instance.
@@ -159,7 +159,7 @@ public abstract class InspectPanel extends JPanel implements UserPrefConstants{
 		JPanel labelBox3 = new JPanel();
 		labelBox3.setLayout(new BoxLayout(labelBox3, BoxLayout.Y_AXIS));
 		
-		labelBox3.add(new JLabel("ISK/hour"));
+		labelBox3.add(new JLabel("Profit/hour"));
 		labelBox3.add(new JLabel("Profit %"));
 		
 		JPanel valueBox3 = new JPanel();
@@ -167,10 +167,10 @@ public abstract class InspectPanel extends JPanel implements UserPrefConstants{
 		valueBox3.setPreferredSize(new Dimension(120, 30));
 		
 		//Adjust components.
-		iskPerH.setAlignmentX(RIGHT_ALIGNMENT);
+		profitPerH.setAlignmentX(RIGHT_ALIGNMENT);
 		profitPercent.setAlignmentX(RIGHT_ALIGNMENT);
 		
-		valueBox3.add(iskPerH);
+		valueBox3.add(profitPerH);
 		valueBox3.add(profitPercent);
 		
 		profitPanel.add(labelBox3);
@@ -230,7 +230,7 @@ public abstract class InspectPanel extends JPanel implements UserPrefConstants{
 		profit.setValue(q.getProfit() / q.getRuns());
 		profitAll.setValue(q.getProfit());
 		
-		iskPerH.setValue(q.getProfitPerHour());
+		profitPerH.setValue(q.getProfitPerHour());
 		profitPercent.setValue((q.getProfit() / q.getManuCost()) * 100);
 		
 		//Call subclass method.

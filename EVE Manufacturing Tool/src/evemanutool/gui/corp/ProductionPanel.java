@@ -18,6 +18,7 @@ import evemanutool.constants.DBConstants;
 import evemanutool.data.cache.TradeEntry.HistoryType;
 import evemanutool.data.display.CorpProductionQuote;
 import evemanutool.gui.corp.components.CorpProductionQuoteModel;
+import evemanutool.gui.corp.components.QuoteQuickInspectPanel;
 import evemanutool.gui.corp.components.TradeHistoryPanel;
 import evemanutool.gui.general.tabel.ScrollableTablePanel;
 import evemanutool.gui.main.EMT;
@@ -38,6 +39,7 @@ public class ProductionPanel extends JPanel implements GUIUpdater, SwingConstant
 	//GUI Components.
 	private ScrollableTablePanel<CorpProductionQuote> prodPanel;
 	private SupplyPanel supplyPanel;
+	private QuoteQuickInspectPanel quotePanel;
 	private TradeHistoryPanel marketTrend;
 	private TradeHistoryPanel volumeTrend;
 	private JButton removeBtn;
@@ -58,6 +60,13 @@ public class ProductionPanel extends JPanel implements GUIUpdater, SwingConstant
 		prodPanel.getTable().getSelectionModel().addListSelectionListener(new SelectionListener());
 		prodPanel.setBorder(BorderFactory.createTitledBorder("Production List"));
 		
+		//Setup topPanel.
+		JPanel topPanel = new JPanel(new GridLayout(1, 2));
+		
+		//Setup QuoteQuickInspectPanel.
+		quotePanel = new QuoteQuickInspectPanel();
+		quotePanel.setBorder(BorderFactory.createTitledBorder("QuickLook"));
+		
 		//Setup actionPanel.
 		JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 5));
 		actionPanel.setBorder(BorderFactory.createTitledBorder("Actions"));
@@ -69,7 +78,10 @@ public class ProductionPanel extends JPanel implements GUIUpdater, SwingConstant
 		actionPanel.add(removeBtn);
 		actionPanel.add(lookUpBtn);
 		
-		tablePanel.add(actionPanel, BorderLayout.NORTH);
+		topPanel.add(actionPanel);
+		topPanel.add(quotePanel);
+		
+		tablePanel.add(topPanel, BorderLayout.NORTH);
 		tablePanel.add(prodPanel, BorderLayout.CENTER);
 		
 		//Setup internal panels.
@@ -126,11 +138,14 @@ public class ProductionPanel extends JPanel implements GUIUpdater, SwingConstant
 			if (!e.getValueIsAdjusting() && 
 					prodPanel.getTable().getSelectedRow() >= 0 && 
 					prodPanel.getTable().getSelectedRow() < prodPanel.getModel().size()) {
-				
-				//Set the trend data.
+
+				//Get the selected quote.
 				selectedQuote = prodPanel.getModel().getDataAt(prodPanel.getSorter().convertRowIndexToModel(prodPanel.getTable().getSelectedRow()));
+				//Set the trend data.
 				marketTrend.setTradeHistory(pdb.getSellTH(selectedQuote.getQuote().getBpo().getProduct().getTypeId()), HistoryType.AVG);
 				volumeTrend.setTradeHistory(pdb.getSellTH(selectedQuote.getQuote().getBpo().getProduct().getTypeId()), HistoryType.VOLUME);
+				//Show quick info.
+				quotePanel.selectQuote(selectedQuote);
 			}
 		}
 	}
