@@ -60,6 +60,7 @@ import com.beimin.eveapi.shared.wallet.transactions.WalletTransactionsResponse;
 import com.beimin.eveapi.utils.AccessChecker;
 
 import evemanutool.constants.DBConstants;
+import evemanutool.constants.ErrorConstants;
 import evemanutool.constants.UserPrefConstants;
 import evemanutool.data.cache.BlueprintAssetEntry;
 import evemanutool.data.cache.CorpProductionEntry;
@@ -92,8 +93,9 @@ import evemanutool.utils.calc.TaxCalculator;
 import evemanutool.utils.calc.ValueCalculator;
 import evemanutool.utils.datahandling.Database;
 import evemanutool.utils.datahandling.DatabaseHandler.Stage;
+import evemanutool.utils.exceptions.ApiServerException;
 
-public class CorpApiDB extends Database implements DBConstants, UserPrefConstants{
+public class CorpApiDB extends Database implements DBConstants, UserPrefConstants, ErrorConstants {
 	
 	//DB:s
 	private Preferences prefs;
@@ -178,142 +180,147 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 		//Create and check the API-key.
 		auth = new ApiAuthorization(prefs.getAPIId(API.ID), prefs.getAPIKey(API.KEY)); //Move to prefs.
 		if (!checkAPIAuthoraization(auth)) {
-			throw new ApiException("API key not authorized");
+			throw new ApiServerException(API_AUTH_ERROR_MESSAGE);
 		}
 		
-		//Get security information.
-		MemberSecurityParser parser = MemberSecurityParser.getInstance();
-		MemberSecurityResponse response = parser.getResponse(auth);
-		for (ApiSecurityMember a : response.getMembers()) {
-			securityMap.put(a.getCharacterID(), a);
-		}
-		
-		//Get corporation members.
-		MemberTrackingParser parser1 = MemberTrackingParser.getInstance();
-		MemberTrackingResponse response1 = parser1.getResponse(auth);
-		for (ApiMember a : response1.getAll()) {
-			characterMap.put(a.getCharacterID(), a);
-		}
-		
-		//Get general corporation information
-		CorpSheetParser parser2 = CorpSheetParser.getInstance();
-		corpInfo = parser2.getResponse(auth);
-		
-		//Get account balance.
-		AccountBalanceParser parser3 = AccountBalanceParser.getInstance();
-		AccountBalanceResponse response3 = parser3.getResponse(auth);
-		for (EveAccountBalance e : response3.getAll()) {
-			accountMap.put(e.getAccountKey(), e);
-		}
-		
-		//Get market orders.
-		MarketOrdersParser parser4 = MarketOrdersParser.getInstance();
-		MarketOrdersResponse response4 = parser4.getResponse(auth);
-		rawOrders = new ArrayList<>(response4.getAll());
-		
-		//Get industry jobs.
-		IndustryJobsParser parser5 = IndustryJobsParser.getInstance();
-		IndustryJobsResponse response5 = parser5.getResponse(auth);
-		industryJobs = new ArrayList<>(response5.getAll());
-		
-		//Get assets.
-		AssetListParser parser6 = AssetListParser.getInstance();
-		AssetListResponse response6 = parser6.getResponse(auth);
-		rawAssets = new ArrayList<>(response6.getAll());
-		
-		//Complete Journal list.
-		WalletJournalParser parser7 = WalletJournalParser.getInstance();
-		WalletJournalResponse response7;
-		ArrayList<WalletJournalEntry> l1;
-		WalletJournalEntry e1;
-		for (int i = DIVISION_KEYS[0]; i < DIVISION_KEYS[DIVISION_KEYS.length - 1]; i++) {
+		try {
+			//Get security information.
+			MemberSecurityParser parser = MemberSecurityParser.getInstance();
+			MemberSecurityResponse response = parser.getResponse(auth);
+			for (ApiSecurityMember a : response.getMembers()) {
+				securityMap.put(a.getCharacterID(), a);
+			}
 			
-			//Initiate the list.
-			l1 = walletJournal.get(i);
-			response7 = parser7.getResponse(auth, i);
-			if (l1 == null) {
-				walletJournal.put(i, new ArrayList<WalletJournalEntry>());
+			//Get corporation members.
+			MemberTrackingParser parser1 = MemberTrackingParser.getInstance();
+			MemberTrackingResponse response1 = parser1.getResponse(auth);
+			for (ApiMember a : response1.getAll()) {
+				characterMap.put(a.getCharacterID(), a);
+			}
+			
+			//Get general corporation information
+			CorpSheetParser parser2 = CorpSheetParser.getInstance();
+			corpInfo = parser2.getResponse(auth);
+			
+			//Get account balance.
+			AccountBalanceParser parser3 = AccountBalanceParser.getInstance();
+			AccountBalanceResponse response3 = parser3.getResponse(auth);
+			for (EveAccountBalance e : response3.getAll()) {
+				accountMap.put(e.getAccountKey(), e);
+			}
+			
+			//Get market orders.
+			MarketOrdersParser parser4 = MarketOrdersParser.getInstance();
+			MarketOrdersResponse response4 = parser4.getResponse(auth);
+			rawOrders = new ArrayList<>(response4.getAll());
+			
+			//Get industry jobs.
+			IndustryJobsParser parser5 = IndustryJobsParser.getInstance();
+			IndustryJobsResponse response5 = parser5.getResponse(auth);
+			industryJobs = new ArrayList<>(response5.getAll());
+			
+			//Get assets.
+			AssetListParser parser6 = AssetListParser.getInstance();
+			AssetListResponse response6 = parser6.getResponse(auth);
+			rawAssets = new ArrayList<>(response6.getAll());
+			
+			//Complete Journal list.
+			WalletJournalParser parser7 = WalletJournalParser.getInstance();
+			WalletJournalResponse response7;
+			ArrayList<WalletJournalEntry> l1;
+			WalletJournalEntry e1;
+			for (int i = DIVISION_KEYS[0]; i < DIVISION_KEYS[DIVISION_KEYS.length - 1]; i++) {
+				
+				//Initiate the list.
 				l1 = walletJournal.get(i);
-			}
-			//Add entries.
-			for (ApiJournalEntry a : response7.getAll()) {
-				
-				e1 = new WalletJournalEntry(a);
-				if (!l1.contains(e1)) {
-					l1.add(e1);
+				response7 = parser7.getResponse(auth, i);
+				if (l1 == null) {
+					walletJournal.put(i, new ArrayList<WalletJournalEntry>());
+					l1 = walletJournal.get(i);
 				}
+				//Add entries.
+				for (ApiJournalEntry a : response7.getAll()) {
+					
+					e1 = new WalletJournalEntry(a);
+					if (!l1.contains(e1)) {
+						l1.add(e1);
+					}
+				}
+				//Sort the list.				
+				Collections.sort(l1);
 			}
-			//Sort the list.				
-			Collections.sort(l1);
-		}
-			
-		//Complete Transaction list.
-		WalletTransactionsParser parser8 = WalletTransactionsParser.getInstance();
-		WalletTransactionsResponse response8;
-		ArrayList<WalletTransactionEntry> l2;
-		WalletTransactionEntry e2;
-		for (int i = DIVISION_KEYS[0]; i < DIVISION_KEYS[DIVISION_KEYS.length - 1]; i++) {
-			
-			//Initiate the list.
-			l2 = walletTransactions.get(i);
-			response8 = parser8.getResponse(auth, i);
-			if (l2 == null) {
-				walletTransactions.put(i, new ArrayList<WalletTransactionEntry>());
+				
+			//Complete Transaction list.
+			WalletTransactionsParser parser8 = WalletTransactionsParser.getInstance();
+			WalletTransactionsResponse response8;
+			ArrayList<WalletTransactionEntry> l2;
+			WalletTransactionEntry e2;
+			for (int i = DIVISION_KEYS[0]; i < DIVISION_KEYS[DIVISION_KEYS.length - 1]; i++) {
+				
+				//Initiate the list.
 				l2 = walletTransactions.get(i);
-			}
-			//Add entries.
-			for (ApiWalletTransaction a : response8.getAll()) {
-				
-				e2 = new WalletTransactionEntry(a);
-				
-				if (!l2.contains(e2)) {
-					l2.add(e2);
+				response8 = parser8.getResponse(auth, i);
+				if (l2 == null) {
+					walletTransactions.put(i, new ArrayList<WalletTransactionEntry>());
+					l2 = walletTransactions.get(i);
 				}
+				//Add entries.
+				for (ApiWalletTransaction a : response8.getAll()) {
+					
+					e2 = new WalletTransactionEntry(a);
+					
+					if (!l2.contains(e2)) {
+						l2.add(e2);
+					}
+				}
+				//Sort the list.
+				Collections.sort(l2);
 			}
-			//Sort the list.
-			Collections.sort(l2);
-		}
-		
-		CorporationTitlesParser parser9 = CorporationTitlesParser.getInstance();
-		CorporationTitlesResponse response9 = parser9.getResponse(auth);
-		for (ApiTitle a : response9.getAll()) {
-			for (ApiSecurityMember aSM : securityMap.values()) {
-				for (ApiSecurityTitle aST : aSM.getTitles()) {
-					if (aST.getTitleID() == a.getTitleID()) {
-						//Add roles.
-						for (ApiRole aR : a.getRoles()) {
-							addRole(aR, aSM.getRoles());
-						}
-						for (ApiRole aR : a.getRolesAtBase()) {
-							addRole(aR, aSM.getRolesAtBase());
-						}
-						for (ApiRole aR : a.getRolesAtHQ()) {
-							addRole(aR, aSM.getRolesAtHQ());
-						}
-						for (ApiRole aR : a.getRolesAtOther()) {
-							addRole(aR, aSM.getRolesAtOther());
+			
+			CorporationTitlesParser parser9 = CorporationTitlesParser.getInstance();
+			CorporationTitlesResponse response9 = parser9.getResponse(auth);
+			for (ApiTitle a : response9.getAll()) {
+				for (ApiSecurityMember aSM : securityMap.values()) {
+					for (ApiSecurityTitle aST : aSM.getTitles()) {
+						if (aST.getTitleID() == a.getTitleID()) {
+							//Add roles.
+							for (ApiRole aR : a.getRoles()) {
+								addRole(aR, aSM.getRoles());
+							}
+							for (ApiRole aR : a.getRolesAtBase()) {
+								addRole(aR, aSM.getRolesAtBase());
+							}
+							for (ApiRole aR : a.getRolesAtHQ()) {
+								addRole(aR, aSM.getRolesAtHQ());
+							}
+							for (ApiRole aR : a.getRolesAtOther()) {
+								addRole(aR, aSM.getRolesAtOther());
+							}
 						}
 					}
 				}
 			}
-		}
-		
-		
-		
-		StarbaseListParser parser10 = StarbaseListParser.getInstance();
-		StarbaseListResponse response10 = parser10.getResponse(auth);
-		for (ApiStarbase a : response10.getAll()) {
-			StarbaseDetailParser parser11 = StarbaseDetailParser.getInstance();
-			StarbaseDetailResponse response11 = parser11.getResponse(auth, a.getItemID());
-			//Do stuff with POS data.
-			a.getStarbaseState().toString(); //String state, online etc.
-			a.getTypeID(); //Get POS control tower item.
-			a.getLocationID(); //Solar system Id.
-			a.getOnlineTimestamp(); //When POS was or will be online.
-			a.getStateTimestamp(); //When coming out of reinforced or when unanchored.
-			a.getMoonID(); //Celestial object id ref. in MapDenormalize. table. 0 if unanchored.
 			
-			response11.getFuelMap(); //TypeId,Quantity.
+			
+			
+			StarbaseListParser parser10 = StarbaseListParser.getInstance();
+			StarbaseListResponse response10 = parser10.getResponse(auth);
+			for (ApiStarbase a : response10.getAll()) {
+				StarbaseDetailParser parser11 = StarbaseDetailParser.getInstance();
+				StarbaseDetailResponse response11 = parser11.getResponse(auth, a.getItemID());
+				//Do stuff with POS data.
+				a.getStarbaseState().toString(); //String state, online etc.
+				a.getTypeID(); //Get POS control tower item.
+				a.getLocationID(); //Solar system Id.
+				a.getOnlineTimestamp(); //When POS was or will be online.
+				a.getStateTimestamp(); //When coming out of reinforced or when unanchored.
+				a.getMoonID(); //Celestial object id ref. in MapDenormalize. table. 0 if unanchored.
+				
+				response11.getFuelMap(); //TypeId,Quantity.
+			}	
+		} catch (ApiException e) {
+			//Convert to a ApiServerException.
+			throw new ApiServerException(e);
 		}
 		
 		//Show message.

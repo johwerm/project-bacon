@@ -10,12 +10,12 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import com.beimin.eveapi.exception.ApiException;
-
+import evemanutool.constants.ErrorConstants;
 import evemanutool.data.general.Pair;
 import evemanutool.gui.main.EMT;
+import evemanutool.utils.exceptions.ServerException;
 
-public class DatabaseHandler extends ThreadedHandler{
+public class DatabaseHandler extends ThreadedHandler {
 	
 	//Constants.
 	public enum Stage {RAW(0), NESTED(1), DERIVED(2), PROCESS(3), COMPUTE(4), SAVE(5);
@@ -286,7 +286,7 @@ public class DatabaseHandler extends ThreadedHandler{
 		}
 	}
 
-	private class DBWorker implements Runnable{
+	private class DBWorker implements Runnable, ErrorConstants {
 		
 		private Database db;
 		private Stage stage;
@@ -331,19 +331,23 @@ public class DatabaseHandler extends ThreadedHandler{
 				}
 			} catch (Exception e) {
 				System.out.println("Exception during task: "  + db.getClass().getSimpleName() + "-" + db.getStage());
-				if (e instanceof ApiException) {
-					System.out.println(((ApiException) e).getMessage());
-				}
-				e.printStackTrace();
 				
-				//An unexpected error has occurred and the database is disabled.
+				//Check for expected errors to give the user feedback.
+				if (e instanceof ServerException) {
+					EMT.M_HANDLER.addMessage(((ServerException) e).getUserErrorMessage());
+				} else {
+					//Unexpected exception.
+					e.printStackTrace();
+				}
+				
+				//An error has occurred and the database is disabled.
 				db.setEnabled(false);
 				db.setState(State.WAITING);
 				
 				//Database is critical to application, terminate with message.
 				if (db.isProvider()) {
-					//Shows the message, and kills app.
-					JOptionPane.showMessageDialog(EMT.MAIN, "Critical loading error, some data files may have been corrupted.",
+					//Shows the message, and kills application.
+					JOptionPane.showMessageDialog(EMT.MAIN, CRITICAL_APPLICATION_ERROR_MESSAGE,
 							"Error", JOptionPane.ERROR_MESSAGE);
 					EMT.MAIN.killApp();
 					
