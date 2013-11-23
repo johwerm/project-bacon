@@ -1,4 +1,4 @@
-package evemanutool.user;
+package evemanutool.prefs;
 
 import java.util.HashSet;
 

@@ -12,7 +12,7 @@ import com.beimin.eveapi.shared.accountbalance.EveAccountBalance;
 import evemanutool.constants.DBConstants;
 import evemanutool.data.display.Asset;
 import evemanutool.data.display.MarketOrder;
-import evemanutool.user.Preferences;
+import evemanutool.prefs.Preferences;
 import evemanutool.utils.databases.PriceDB;
 
 public class ValueCalculator implements DBConstants {

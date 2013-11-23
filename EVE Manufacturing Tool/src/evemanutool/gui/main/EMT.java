@@ -50,7 +50,7 @@ import evemanutool.gui.manu.components.InventionInspectPanel;
 import evemanutool.gui.manu.components.ManuInspectPanel;
 import evemanutool.gui.manu.components.ReveseEngineeringInspectPanel;
 import evemanutool.gui.prefs.PrefsDialog;
-import evemanutool.user.Preferences;
+import evemanutool.prefs.Preferences;
 import evemanutool.utils.databases.BlueprintDB;
 import evemanutool.utils.databases.CorpApiDB;
 import evemanutool.utils.databases.GraphicDB;

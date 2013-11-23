@@ -6,7 +6,7 @@ import evemanutool.constants.DBConstants;
 import evemanutool.data.database.Item;
 import evemanutool.data.database.Material;
 import evemanutool.data.display.MiningQuote;
-import evemanutool.user.Preferences;
+import evemanutool.prefs.Preferences;
 import evemanutool.utils.databases.PriceDB;
 
 public class MiningCalculator implements DBConstants {

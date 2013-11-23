@@ -31,7 +31,7 @@ import evemanutool.gui.general.components.NumberLabel;
 import evemanutool.gui.general.tabel.BooleanCellRenderer;
 import evemanutool.gui.general.tabel.ScrollableTablePanel;
 import evemanutool.gui.manu.components.MaterialModel;
-import evemanutool.user.Preferences;
+import evemanutool.prefs.Preferences;
 import evemanutool.utils.databases.BlueprintDB;
 import evemanutool.utils.databases.CorpApiDB;
 import evemanutool.utils.databases.PriceDB;

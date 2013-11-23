@@ -9,10 +9,10 @@ import evemanutool.data.cache.MarketInfoEntry;
 import evemanutool.data.cache.TradeEntry;
 import evemanutool.data.cache.TradeHistoryEntry;
 import evemanutool.data.database.Item;
-import evemanutool.user.Preferences;
-import evemanutool.user.Preferences.MarketAction;
-import evemanutool.user.Preferences.MarketPriceType;
-import evemanutool.user.Preferences.MarketTax;
+import evemanutool.prefs.Preferences;
+import evemanutool.prefs.Preferences.MarketAction;
+import evemanutool.prefs.Preferences.MarketPriceType;
+import evemanutool.prefs.Preferences.MarketTax;
 import evemanutool.utils.databases.PriceDB;
 
 public class MarketCalculator implements UserPrefConstants, DBConstants {
