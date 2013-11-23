@@ -1,6 +1,22 @@
+# Java #
 *.class
 
 # Package Files #
-*.jar
+emt.jar
 *.war
 *.ear
+
+# Eclipse #
+#*.settings/*
+
+# Binaries/Compiles #
+*bin/*
+*.zip
+*.rar
+
+# Unwanted dirs and files #
+*/cache
+*/workdoc
+*/types
+*user.properties
+*db.thumbs
