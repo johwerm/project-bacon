@@ -234,4 +234,6 @@ public interface DBConstants {
 		T1,INV,REV,ORE,ICE;
 	}
 	
+	//Starbases.
+	//POS.
 }

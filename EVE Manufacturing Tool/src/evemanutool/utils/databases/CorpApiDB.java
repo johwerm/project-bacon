@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -77,9 +79,11 @@ import evemanutool.data.display.Asset;
 import evemanutool.data.display.BlueprintAsset;
 import evemanutool.data.display.CorpMember;
 import evemanutool.data.display.CorpProductionQuote;
+import evemanutool.data.display.Fuel;
 import evemanutool.data.display.ManuAcquisition;
 import evemanutool.data.display.MarketAcquisition;
 import evemanutool.data.display.MarketOrder;
+import evemanutool.data.display.POS;
 import evemanutool.data.display.Supply;
 import evemanutool.data.general.Time;
 import evemanutool.gui.main.EMT;
@@ -155,6 +159,12 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 	private volatile ArrayList<Supply> supplies;
 	private volatile ArrayList<MarketAcquisition> marketAcquisitions;
 	private volatile ArrayList<ManuAcquisition> manuAcquisitions;
+	
+	//Starbases.
+	private volatile ArrayList<ApiStarbase> rawPOSList;
+	private volatile ArrayList<Map<Integer, Integer>> rawFuelList;
+	private volatile ArrayList<POS> posList;
+	
 	
 	public CorpApiDB() {
 		super(false, true, Stage.COMPUTE, null);
@@ -305,19 +315,17 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 			
 			StarbaseListParser parser10 = StarbaseListParser.getInstance();
 			StarbaseListResponse response10 = parser10.getResponse(auth);
+			ArrayList<ApiStarbase> aL = new ArrayList<>();
+			ArrayList<Map<Integer, Integer>> fL = new ArrayList<>();
 			for (ApiStarbase a : response10.getAll()) {
 				StarbaseDetailParser parser11 = StarbaseDetailParser.getInstance();
 				StarbaseDetailResponse response11 = parser11.getResponse(auth, a.getItemID());
-				//Do stuff with POS data.
-				a.getStarbaseState().toString(); //String state, online etc.
-				a.getTypeID(); //Get POS control tower item.
-				a.getLocationID(); //Solar system Id.
-				a.getOnlineTimestamp(); //When POS was or will be online.
-				a.getStateTimestamp(); //When coming out of reinforced or when unanchored.
-				a.getMoonID(); //Celestial object id ref. in MapDenormalize. table. 0 if unanchored.
-				
-				response11.getFuelMap(); //TypeId,Quantity.
+				aL.add(a);
+				fL.add(response11.getFuelMap());
 			}	
+			rawPOSList = aL;
+			rawFuelList = fL;
+			
 		} catch (ApiException e) {
 			//Convert to a ApiServerException.
 			throw new ApiServerException(e);
@@ -476,10 +484,32 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 			//Add BPO.
 			tmpBpos.add(new BlueprintAsset(idb.getItem(bAE2.getTypeId()), blocation, bAE2, iA, bS));
 		}
+		
+		//Starbases.
+		ArrayList<POS> tmpPOSList = new ArrayList<>();;
+		ApiStarbase a;
+		ArrayList<Fuel> fL;
+		for (int i = 0; i < rawPOSList.size(); i++) {
+			a = rawPOSList.get(i);
+			fL = new ArrayList<>();
+			
+			//Create fuelList.
+			for (Map<Integer, Integer> fuelMap : rawFuelList) {
+				for (Entry<Integer, Integer> fuel : fuelMap.entrySet()) {
+					fL.add(new Fuel(idb.getItem(fuel.getKey()), fuel.getValue()));
+				}
+			}
+			
+			//Create POS.
+			tmpPOSList.add(new POS(a.getItemID(), idb.getItem(a.getTypeID()), (long) a.getMoonID(),
+					ldb.getSystemById((long) a.getLocationID()), a.getStarbaseState(), a.getOnlineTimestamp(),
+					a.getStateTimestamp(), new Time(0), fL));
+		}
 
 		//Set new database to global reference.
 		rawBpos = tmpRawBpos;
 		bpos = tmpBpos;
+		posList = tmpPOSList;
 		
 		//Show message.
 		EMT.M_HANDLER.addMessage("Industry and asset data procesed.");
@@ -846,6 +876,10 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 	
 	public ArrayList<CorpMember> getCorpMembers() {
 		return corpMembers;
+	}
+
+	public ArrayList<POS> getPosList() {
+		return posList;
 	}
 
 	/*

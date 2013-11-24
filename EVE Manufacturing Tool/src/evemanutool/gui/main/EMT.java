@@ -39,6 +39,7 @@ import evemanutool.constants.GUIConstants;
 import evemanutool.constants.UserPrefConstants;
 import evemanutool.data.database.ManuQuote;
 import evemanutool.gui.corp.AssetsPanel;
+import evemanutool.gui.corp.POSPanel;
 import evemanutool.gui.corp.ProductionPanel;
 import evemanutool.gui.corp.StatsPanel;
 import evemanutool.gui.corp.SupplyPanel;
@@ -103,6 +104,7 @@ public class EMT extends JFrame implements UserPrefConstants, DBConstants, GUICo
 	private QuoteListPanel revPanel;
 	private ProductionPanel prodPanel;
 	private StatsPanel statsPanel;
+	private POSPanel posPanel;
 	private SupplyPanel supplyPanel;
 	private AssetsPanel assetsPanel;
 	private TradePanel tradePanel;
@@ -119,7 +121,6 @@ public class EMT extends JFrame implements UserPrefConstants, DBConstants, GUICo
 	private JMenuItem updateItem;
 	private JMenuItem creditsItem;
 	private AnimatedLabel statusLabel;
-
 
 	public EMT() {
 		
@@ -293,6 +294,10 @@ public class EMT extends JFrame implements UserPrefConstants, DBConstants, GUICo
 		//Assets.
 		assetsPanel = new AssetsPanel(cdb);
 		corpTabbedPane.addTab("Assets & Blueprints", assetsPanel);
+
+		//POS.
+		posPanel = new POSPanel(cdb);
+		corpTabbedPane.addTab("POS", posPanel);
 		
 		//Supplies.
 		supplyPanel = new SupplyPanel(cdb);
@@ -409,6 +414,7 @@ public class EMT extends JFrame implements UserPrefConstants, DBConstants, GUICo
 		D_HANDLER.addGUIUpdater(statsPanel, Stage.COMPUTE, cdb);
 		D_HANDLER.addGUIUpdater(tradePanel, Stage.PROCESS, cdb);
 		D_HANDLER.addGUIUpdater(assetsPanel, Stage.PROCESS, cdb);
+		D_HANDLER.addGUIUpdater(posPanel, Stage.PROCESS, cdb);
 		D_HANDLER.addGUIUpdater(prodPanel, Stage.COMPUTE, cdb);
 		D_HANDLER.addGUIUpdater(supplyPanel, Stage.COMPUTE, cdb);
 		
