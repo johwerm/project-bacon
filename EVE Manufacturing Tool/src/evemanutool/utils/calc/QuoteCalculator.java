@@ -232,7 +232,7 @@ public class QuoteCalculator implements UserPrefConstants, DBConstants{
 				+ time * prefs.getManufacturingCost(ManufacturingCost.INSTALLATION_COST_H) / 3600;
 		
 		//Set the T1 BPO market availability.
-		boolean seededOnMarket = MarketCalculator.isItemAvailable(b.getBlueprintItem(), pdb, prefs);
+		boolean seededOnMarket = b.getBlueprintItem().isOnMarket();
 		
 		//Create quote.
 		ManuQuote ans = new ManuQuote(	b, 
