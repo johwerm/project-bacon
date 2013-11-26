@@ -489,7 +489,7 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 		}
 		
 		//Starbases.
-		ArrayList<POS> tmpPOSList = new ArrayList<>();;
+		ArrayList<POS> tmpPOSList = new ArrayList<>();
 		ApiStarbase a;
 		ArrayList<Fuel> fL;
 		for (int i = 0; i < rawPOSList.size(); i++) {
