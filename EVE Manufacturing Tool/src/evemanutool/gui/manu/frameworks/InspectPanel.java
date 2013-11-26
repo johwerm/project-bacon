@@ -30,6 +30,7 @@ import evemanutool.gui.general.components.LabelBox;
 import evemanutool.gui.general.components.NumberLabel;
 import evemanutool.gui.general.tabel.BooleanCellRenderer;
 import evemanutool.gui.general.tabel.ScrollableTablePanel;
+import evemanutool.gui.main.EMT;
 import evemanutool.gui.manu.components.MaterialModel;
 import evemanutool.prefs.Preferences;
 import evemanutool.utils.databases.BlueprintDB;
@@ -306,7 +307,8 @@ public abstract class InspectPanel extends JPanel implements UserPrefConstants{
 				if (q != null && cdb.isComplete()) {
 					if (!cdb.addProductionQuote(q)) {
 						//If not successful, show dialog.
-						JOptionPane.showMessageDialog(null, "The selected quote could not be added and may already exist", "Info", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(EMT.MAIN, 
+								"The selected quote could not be added and may already exist", "Info", JOptionPane.INFORMATION_MESSAGE);
 					}else {
 						cdb.updateSupplyData();
 						prodPanel.updateGUI();
