@@ -23,10 +23,11 @@ public class POS {
 	private final Date stateTimestamp;
 	private final Time fuelLeft;
 	private final ArrayList<Fuel> fuelList;
+	private final ArrayList<Fuel> fuelReqList;
 	
 	public POS(long itemId, ApiLocation apiLocation, Item controlTower, long moonId, SolarSystem system,
 			ApiStarbaseState state, Date onlineTimestamp, Date stateTimestamp, 
-			Time fuelLeft, Collection<Fuel> fuelList) {
+			Time fuelLeft, Collection<Fuel> fuelList, ArrayList<Fuel> fuelReqList) {
 		this.itemId = itemId;
 		this.apiLocation = apiLocation;
 		this.controlTower = controlTower;
@@ -37,6 +38,7 @@ public class POS {
 		this.stateTimestamp = stateTimestamp;
 		this.fuelLeft = fuelLeft;
 		this.fuelList = new ArrayList<>(fuelList);
+		this.fuelReqList = new ArrayList<>(fuelReqList);
 	}
 
 	public long getMoonId() {
@@ -77,5 +79,9 @@ public class POS {
 
 	public ArrayList<Fuel> getFuelList() {
 		return fuelList;
+	}
+
+	public ArrayList<Fuel> getFuelReqList() {
+		return fuelReqList;
 	}
 }

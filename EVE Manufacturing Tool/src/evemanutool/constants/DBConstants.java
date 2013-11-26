@@ -29,6 +29,7 @@ public interface DBConstants {
 	public static final String SYSTEMS_PATH = "data/mapSolarSystems.csv";
 	public static final String CONSTELLATIONS_PATH = "data/mapConstellations.csv";
 	public static final String REGIONS_PATH = "data/mapRegions.csv";
+	public static final String POS_FUEL_PATH = "data/invControlTowerResources.csv";
 
 	//Parse delimiters.
 	public static final String LEVEL1_DELIM = "%";
@@ -233,8 +234,27 @@ public interface DBConstants {
 		T1,INV,REV,ORE,ICE;
 	}
 	
-	//Starbases.
 	//POS.
+	public enum FuelPurpose {
+		Online("Online", 1), Reinforced("Reinforced", 4);
+		
+		public final String name;
+		public final int key;
+	
+		private FuelPurpose(String name, int key) {
+			this.name = name;
+			this.key = key;
+		}
+		
+		public static FuelPurpose getFromKey(int key) {
+			for (FuelPurpose a : values()) {
+				if (a.key == key) {
+					return a;
+				}
+			}
+			return null;
+		}
+	}
 	
 	//Time constans.
 	public static final long MILLIS_IN_MONTH = 2419200000L; //4 weeks

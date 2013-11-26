@@ -3,14 +3,15 @@ package evemanutool.gui.corp.components;
 import javax.swing.SwingConstants;
 
 import evemanutool.data.display.Fuel;
+import evemanutool.data.general.Time;
 import evemanutool.gui.general.tabel.SimpleTableModel;
 
 @SuppressWarnings("serial")
 public class POSFuelModel extends SimpleTableModel<Fuel> implements SwingConstants {
 	
 	public POSFuelModel() {
-		super(	new String[] {"Type", "Amount"},
-				new int[] {LEFT, RIGHT});
+		super(	new String[] {"Type", "Time Left", "Amount"},
+				new int[] {LEFT, LEFT, RIGHT});
 	}
 	
 	@Override
@@ -22,6 +23,9 @@ public class POSFuelModel extends SimpleTableModel<Fuel> implements SwingConstan
 				return String.class;
 				
 			case 1:
+				return Time.class;
+				
+			case 2:
 				return Integer.class;
 				
 			default:
@@ -38,6 +42,9 @@ public class POSFuelModel extends SimpleTableModel<Fuel> implements SwingConstan
 			return f.getItem().getName();
 
 		case 1:
+			return new Time((long) (f.getAmount() / f.getReqAmount()) * 3600 * 1000);
+
+		case 2:
 			return f.getAmount();
 			
 		default:

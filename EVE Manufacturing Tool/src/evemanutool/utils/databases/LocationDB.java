@@ -66,7 +66,7 @@ public class LocationDB extends Database implements DBConstants{
 		csv.readNext();
 		while ((nextLine = csv.readNext()) != null) {
 			id = Long.parseLong(nextLine[0]);
-			regionDb.put(id, new Region(id, nextLine[1]));
+			regionDb.put(id, new Region(id, nextLine[1], !nextLine[11].equals("") ? Long.parseLong(nextLine[11]) : 0));
 		}
 		csv.close();
 		

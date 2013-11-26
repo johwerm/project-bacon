@@ -2,6 +2,7 @@ package evemanutool.utils.databases;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +13,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 import com.beimin.eveapi.account.apikeyinfo.ApiKeyInfoParser;
 import com.beimin.eveapi.account.apikeyinfo.ApiKeyInfoResponse;
@@ -74,6 +77,7 @@ import evemanutool.data.database.AbstractStation;
 import evemanutool.data.database.Blueprint;
 import evemanutool.data.database.ManuQuote;
 import evemanutool.data.database.Material;
+import evemanutool.data.database.SolarSystem;
 import evemanutool.data.database.Station;
 import evemanutool.data.display.Asset;
 import evemanutool.data.display.BlueprintAsset;
@@ -85,6 +89,7 @@ import evemanutool.data.display.MarketAcquisition;
 import evemanutool.data.display.MarketOrder;
 import evemanutool.data.display.POS;
 import evemanutool.data.display.Supply;
+import evemanutool.data.general.Pair;
 import evemanutool.data.general.Time;
 import evemanutool.gui.main.EMT;
 import evemanutool.prefs.Preferences;
@@ -161,8 +166,7 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 	private volatile ArrayList<ManuAcquisition> manuAcquisitions;
 	
 	//Starbases.
-	private volatile ArrayList<ApiStarbase> rawPOSList;
-	private volatile ArrayList<Map<Integer, Integer>> rawFuelList;
+	private volatile ArrayList<Pair<ApiStarbase, Map<Integer, Integer>>> rawPOSList;
 	private volatile ArrayList<POS> posList;
 	
 	
@@ -315,16 +319,13 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 			
 			StarbaseListParser parser10 = StarbaseListParser.getInstance();
 			StarbaseListResponse response10 = parser10.getResponse(auth);
-			ArrayList<ApiStarbase> aL = new ArrayList<>();
-			ArrayList<Map<Integer, Integer>> fL = new ArrayList<>();
+			ArrayList<Pair<ApiStarbase, Map<Integer, Integer>>> aL = new ArrayList<>();
 			for (ApiStarbase a : response10.getAll()) {
 				StarbaseDetailParser parser11 = StarbaseDetailParser.getInstance();
 				StarbaseDetailResponse response11 = parser11.getResponse(auth, a.getItemID());
-				aL.add(a);
-				fL.add(response11.getFuelMap());
+				aL.add(new Pair<>(a, response11.getFuelMap()));
 			}	
 			rawPOSList = aL;
-			rawFuelList = fL;
 			
 		} catch (ApiException e) {
 			//Convert to a ApiServerException.
@@ -489,24 +490,65 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 		}
 		
 		//Starbases.
+		//Temporary variables.
 		ArrayList<POS> tmpPOSList = new ArrayList<>();
 		ApiStarbase a;
 		ArrayList<Fuel> fL;
+		ArrayList<Fuel> fRL;
+		String[] nextLine;
+		SolarSystem system;
+		CSVReader csv;
+		
 		for (int i = 0; i < rawPOSList.size(); i++) {
-			a = rawPOSList.get(i);
+			a = rawPOSList.get(i).getFst();
 			fL = new ArrayList<>();
+			fRL = new ArrayList<>();
+			
+			//Parse fuel requirements.
+			csv = new CSVReader(new FileReader(POS_FUEL_PATH), ';');
+			
+			//Skip header.
+			csv.readNext();
+			while ((nextLine = csv.readNext()) != null) {
+				system = ldb.getSystemById((long) a.getLocationID());
+				
+				//Right ControlTower, factionId and minSecLevel.
+				if (	Integer.parseInt(nextLine[0]) == a.getTypeID() &&
+						(nextLine[5].equals("") ||
+							Long.parseLong(nextLine[5]) == ldb.getRegionById(system.getRegionId()).getFactionId()) &&
+						(nextLine[4].equals("") ||
+						Double.parseDouble(nextLine[4]) < system.getSecurity())) {
+					
+					//Add requirement.
+					fRL.add(new Fuel(idb.getItem(Integer.parseInt(nextLine[1])), 
+							FuelPurpose.getFromKey(Integer.parseInt(nextLine[2])), 0, Integer.parseInt(nextLine[3])));
+				}
+			}
+			csv.close();
 			
 			//Create fuelList.
-			for (Map<Integer, Integer> fuelMap : rawFuelList) {
-				for (Entry<Integer, Integer> fuel : fuelMap.entrySet()) {
-					fL.add(new Fuel(idb.getItem(fuel.getKey()), fuel.getValue()));
+			for (Entry<Integer, Integer> fuel : rawPOSList.get(i).getSnd().entrySet()) {
+				for (Fuel fR : fRL) {
+					if (fR.getItem().getTypeId() == fuel.getKey()) {
+						fL.add(new Fuel(fR.getItem(), fR.getPurpose(), fuel.getValue(), fR.getReqAmount()));
+						break;
+					}
+				}
+			}
+			
+			//Calculate fuel-time left.
+			long hours = 0;
+			for (Fuel f : fL) {
+				if (f.getPurpose() == FuelPurpose.Online && 
+						(hours == 0 || hours > f.getAmount() / f.getReqAmount())) {
+					hours = f.getAmount() / f.getReqAmount();
 				}
 			}
 			
 			//Create POS.
 			tmpPOSList.add(new POS(a.getItemID(), dataMap.get(a.getItemID()),idb.getItem(a.getTypeID()), (long) a.getMoonID(),
 					ldb.getSystemById((long) a.getLocationID()), a.getStarbaseState(), a.getOnlineTimestamp(),
-					a.getStateTimestamp(), new Time(0), fL));
+					a.getStateTimestamp(), new Time(hours * 3600 * 1000), fL, fRL));
 		}
 
 		//Set new database to global reference.
