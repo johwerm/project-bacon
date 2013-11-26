@@ -60,7 +60,7 @@ public class CorpProductionQuoteModel extends SimpleTableModel<CorpProductionQuo
 			return q.getAvgWeekTradedAmount();
 			
 		case 2:
-			return q.getAvgWeekSoldAmount();
+			return q.getAvgWeekCorpSoldAmount();
 			
 		case 3:
 			return q.getSellTarget();

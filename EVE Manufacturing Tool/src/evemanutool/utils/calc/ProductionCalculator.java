@@ -1,8 +1,6 @@
 package evemanutool.utils.calc;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 
 import com.beimin.eveapi.shared.industryjobs.ApiIndustryJob;
@@ -10,9 +8,7 @@ import com.beimin.eveapi.shared.industryjobs.ApiIndustryJob;
 import evemanutool.constants.DBConstants;
 import evemanutool.constants.UserPrefConstants;
 import evemanutool.data.cache.CorpProductionEntry;
-import evemanutool.data.cache.MarketInfoEntry.OrderAim;
-import evemanutool.data.cache.NumberTrendEntry;
-import evemanutool.data.cache.PriceEntry.PriceType;
+import evemanutool.data.cache.TradeEntry;
 import evemanutool.data.cache.WalletTransactionEntry;
 import evemanutool.data.database.Blueprint;
 import evemanutool.data.database.Item;
@@ -23,6 +19,7 @@ import evemanutool.data.display.CorpProductionQuote;
 import evemanutool.data.display.MarketOrder;
 import evemanutool.data.display.Supply;
 import evemanutool.prefs.Preferences;
+import evemanutool.prefs.Preferences.Account;
 import evemanutool.prefs.Preferences.BlueprintStat;
 import evemanutool.utils.databases.BlueprintDB;
 import evemanutool.utils.databases.CorpApiDB;
@@ -32,9 +29,6 @@ import evemanutool.utils.databases.TechDB;
 
 public class ProductionCalculator implements UserPrefConstants, DBConstants {
 	
-	//Constants.
-	private static final long MILLIS_IN_MONTH = 2419200000L; //4 weeks
-
 	public static void updateProductionQuote(CorpProductionQuote q) {
 		
 		//Updates user affected values.
@@ -43,10 +37,8 @@ public class ProductionCalculator implements UserPrefConstants, DBConstants {
 		q.setNeedToProduce(needToProduce > 0 ? needToProduce : 0);
 	}
 
-	public static CorpProductionQuote calculateProductionQuoteFromQuote(ManuQuote quote,  BlueprintDB bdb, PriceDB pdb, ItemDB idb, TechDB tdb,
-			Preferences prefs, ArrayList<Asset> hangarAssets, ArrayList<ApiIndustryJob> industryJobs, ArrayList<MarketOrder> sellOrders,
-			ArrayList<WalletTransactionEntry> walletTransactions) {
-		
+	public static CorpProductionQuote calculateProductionQuoteFromQuote(ManuQuote quote,  BlueprintDB bdb, 
+			PriceDB pdb, CorpApiDB cdb, Preferences prefs) {
 		//Temporary variables.
 		ArrayList<ManuQuote> matQuotes = new ArrayList<>();
 		
@@ -58,30 +50,20 @@ public class ProductionCalculator implements UserPrefConstants, DBConstants {
 			}
 		}
 		
-		//Add new values to trends.		
-		//Price trend
-		ArrayList<NumberTrendEntry> priceList = new ArrayList<>();
-		priceList.add(new NumberTrendEntry(new Date(),
-				MarketCalculator.calculatePrice(Action.SELL, quote.getBpo().getProduct().getTypeId(),  pdb, prefs)));
-		
-		//Volume trend.
-		ArrayList<NumberTrendEntry> volumeList = new ArrayList<>();
-		volumeList.add(new NumberTrendEntry(new Date(), 
-				pdb.getSellMI(quote.getBpo().getProduct().getTypeId()).getPrice(OrderAim.SELL).getValue(PriceType.VOLUME)));
-		
 		//Calculate production numbers.
-		int stock = calculateItemStock(hangarAssets, quote.getBpo().getProduct().getTypeId());
-		int onSale = calculateItemOnSale(sellOrders, quote.getBpo().getProduct().getTypeId());
-		int inProduction = calculateItemInProduction(industryJobs, quote.getBpo());	
+		int stock = calculateItemStock(AssetCalculator.getFlatAssetsInCorpHangar(
+				cdb.getFlatAssets(), prefs.getAccountIndex(Account.INDUSTRY_HANGAR)),
+				quote.getBpo().getProduct().getTypeId());
+		int onSale = calculateItemOnSale(cdb.getSellOrders(), quote.getBpo().getProduct().getTypeId());
+		int inProduction = calculateItemInProduction(cdb.getIndustryJobs(), quote.getBpo());	
 		
-		return new CorpProductionQuote(quote, calculateAvgWeekTradeVolume(volumeList),
-				calculateAvgWeekSoldAmount(quote.getBpo().getProduct(), walletTransactions), 
-				priceList, volumeList, true, stock, onSale, inProduction, 0, 0);
+		return new CorpProductionQuote(quote, calculateAvgWeekTradeVolume(quote.getBpo().getProduct(), pdb),
+				calculateAvgWeekCorpSoldAmount(quote.getBpo().getProduct(), cdb, prefs),
+				true, stock, onSale, inProduction, 0, 0);
 	}
 
-	public static CorpProductionQuote calculateProductionQuoteFromRaw(CorpProductionEntry cMQE, BlueprintDB bdb, PriceDB pdb, ItemDB idb, TechDB tdb,
-			Preferences prefs, ArrayList<Asset> hangarAssets, ArrayList<ApiIndustryJob> industryJobs, ArrayList<MarketOrder> sellOrders,
-			ArrayList<WalletTransactionEntry> walletTransactions) {
+	public static CorpProductionQuote calculateProductionQuoteFromRaw(CorpProductionEntry cMQE, BlueprintDB bdb,
+			PriceDB pdb, ItemDB idb, TechDB tdb, CorpApiDB cdb, Preferences prefs) {
 
 		//Temporary variables.
 		ManuQuote quote;
@@ -112,44 +94,17 @@ public class ProductionCalculator implements UserPrefConstants, DBConstants {
 			}
 		}
 		
-		//Add new values to trends.
-		ArrayList<NumberTrendEntry> nList;
-		
-		//Price trend
-		nList = cMQE.getMarketTrend();
-		Collections.sort(nList);
-		
-		//Make sure that unnecessary entries are removed.
-		if (nList.size() >= 2) {
-			if (nList.get(0).getDate().getTime() - nList.get(1).getDate().getTime() < CorpApiDB.TRADE_UPDATE_INTERVAL * 3600000) {
-				nList.remove(0);
-			}
-		}
-		nList.add(new NumberTrendEntry(new Date(),
-				MarketCalculator.calculatePrice(Action.SELL, quote.getBpo().getProduct().getTypeId(),  pdb, prefs)));
-		
-		//Volume trend.
-		nList = cMQE.getVolumeTrend();
-		Collections.sort(nList);
-		
-		//Make sure that unnecessary entries are removed.
-		if (nList.size() >= 2) {
-			if (nList.get(0).getDate().getTime() - nList.get(1).getDate().getTime() < CorpApiDB.TRADE_UPDATE_INTERVAL * 3600000) {
-				nList.remove(0);
-			}
-		}
-		nList.add(new NumberTrendEntry(new Date(), 
-				pdb.getSellMI(quote.getBpo().getProduct().getTypeId()).getPrice(OrderAim.SELL).getValue(PriceType.VOLUME)));
-		
 		//Calculate production numbers.
-		int stock = calculateItemStock(hangarAssets, quote.getBpo().getProduct().getTypeId());
-		int onSale = calculateItemOnSale(sellOrders, quote.getBpo().getProduct().getTypeId());
-		int inProduction = calculateItemInProduction(industryJobs, quote.getBpo());	
+		int stock = calculateItemStock(AssetCalculator.getFlatAssetsInCorpHangar(
+				cdb.getFlatAssets(), prefs.getAccountIndex(Account.INDUSTRY_HANGAR)),
+				quote.getBpo().getProduct().getTypeId());
+		int onSale = calculateItemOnSale(cdb.getSellOrders(), quote.getBpo().getProduct().getTypeId());
+		int inProduction = calculateItemInProduction(cdb.getIndustryJobs(), quote.getBpo());	
 		int needToProduce = cMQE.getSellTarget() - onSale - inProduction - stock; //Set to 0 if over-stocked (negative). 
 		
-		return new CorpProductionQuote(quote, calculateAvgWeekTradeVolume(cMQE.getVolumeTrend()),
-				calculateAvgWeekSoldAmount(quote.getBpo().getProduct(), walletTransactions), 
-				cMQE.getMarketTrend(), cMQE.getVolumeTrend(), true, stock, onSale, inProduction,
+		return new CorpProductionQuote(quote, calculateAvgWeekTradeVolume(quote.getBpo().getProduct(), pdb),
+				calculateAvgWeekCorpSoldAmount(quote.getBpo().getProduct(), cdb, prefs), 
+				true, stock, onSale, inProduction,
 				needToProduce > 0 ? needToProduce : 0, cMQE.getSellTarget());
 	}
 
@@ -170,15 +125,18 @@ public class ProductionCalculator implements UserPrefConstants, DBConstants {
 		return stock / req;
 	}
 
-	private static int calculateAvgWeekSoldAmount(Item item,
-			ArrayList<WalletTransactionEntry> walletTransactions) {
+	private static int calculateAvgWeekCorpSoldAmount(Item item, CorpApiDB cdb, Preferences prefs) {
+		
 		int amount = 0;
 		//Earliest record included in calculations.
 		Date earliestRecord = new Date();
+		Date now = new Date();
 		
-		for (WalletTransactionEntry wT : walletTransactions) {
+		for (WalletTransactionEntry wT : 
+			cdb.getWalletTransactions().get(DIVISION_KEYS[prefs.getAccountIndex(Account.INDUSTRY_WALLET)])) {
+			
 			if (wT.getTypeId() == item.getTypeId()) {
-				if (wT.getDate().getTime() - new Date().getTime() < MILLIS_IN_MONTH) {
+				if (now.getTime() - wT.getDate().getTime() < MILLIS_IN_MONTH) {
 					if (wT.getDate().before(earliestRecord)) {
 						//Sets the date if earlier.
 						earliestRecord = wT.getDate();
@@ -188,19 +146,18 @@ public class ProductionCalculator implements UserPrefConstants, DBConstants {
 			}
 		}
 		//Calculate the number of weeks data span over.
-		double weeks = (earliestRecord.getTime() - new Date().getTime()) * 4 / MILLIS_IN_MONTH;
+		double weeks = (now.getTime() - earliestRecord.getTime()) / ((double) MILLIS_IN_MONTH / WEEKS_IN_MONTH);
 		
 		return (int) (weeks != 0 ? (amount / weeks) + 0.5 : 0);
 	}
 
-	private static int calculateAvgWeekTradeVolume(Collection<NumberTrendEntry> l) {
-		//Calculates the average.
-		//Will calculate the average of all collected data points i.e (the daily average when the user starts the program).
+	private static int calculateAvgWeekTradeVolume(Item i, PriceDB pdb) {
+		//Calculates the average sold over a week.
 		long volume = 0;
-		for (NumberTrendEntry nTE : l) {
-			volume += nTE.getNumber();
+		for (TradeEntry tE : pdb.getSellTH(i.getTypeId()).getHistory()) {
+			volume += tE.getVolume();
 		}
-		return (int) (volume / l.size() + 0.5);
+		return (int) (volume / ((double) pdb.getSellTH(i.getTypeId()).getHistory().size() / DAYS_IN_WEEK) + 0.5);
 	}
 
 	private static int calculateItemInProduction(ArrayList<ApiIndustryJob> industryJobs, Blueprint b) {

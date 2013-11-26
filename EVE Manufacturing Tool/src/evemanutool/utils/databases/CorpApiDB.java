@@ -556,9 +556,7 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 		productionQuotes = Collections.synchronizedCollection(new ArrayList<CorpProductionQuote>());
 		for (CorpProductionEntry cMQE : rawProductionQuotes) {
 			
-			cQ = ProductionCalculator.calculateProductionQuoteFromRaw(cMQE, bdb, pdb, idb, tdb, prefs, 
-					AssetCalculator.getFlatAssetsInCorpHangar(flatAssets, prefs.getAccountIndex(Account.INDUSTRY_HANGAR)), industryJobs, sellOrders, 
-					walletTransactions.get(DIVISION_KEYS[prefs.getAccountIndex(Account.INDUSTRY_WALLET)]));
+			cQ = ProductionCalculator.calculateProductionQuoteFromRaw(cMQE, bdb, pdb, idb, tdb, this, prefs);
 			if (!productionQuotes.contains(cQ)) {
 				productionQuotes.add(cQ);
 			}
@@ -858,6 +856,22 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 		return sellOrders;
 	}
 	
+	public ConcurrentHashMap<Integer, ArrayList<WalletTransactionEntry>> getWalletTransactions() {
+		return walletTransactions;
+	}
+	
+	public ConcurrentHashMap<Integer, ArrayList<WalletJournalEntry>> getWalletJournal() {
+		return walletJournal;
+	}
+	
+	public ArrayList<ApiIndustryJob> getIndustryJobs() {
+		return industryJobs;
+	}
+	
+	public ArrayList<Asset> getFlatAssets() {
+		return flatAssets;
+	}
+	
 	public Collection<CorpProductionQuote> getProductionQuotes() {
 		return productionQuotes;
 	}
@@ -893,9 +907,7 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 	public boolean addProductionQuote(ManuQuote quote) {
 		
 		//Will try to remove the given quote and returns a boolean based on success.
-		CorpProductionQuote cQ = ProductionCalculator.calculateProductionQuoteFromQuote(quote, bdb, pdb, idb, tdb, prefs,
-				AssetCalculator.getFlatAssetsInCorpHangar(flatAssets, prefs.getAccountIndex(Account.INDUSTRY_HANGAR)), industryJobs, sellOrders, 
-				walletTransactions.get(DIVISION_KEYS[prefs.getAccountIndex(Account.INDUSTRY_WALLET)]));
+		CorpProductionQuote cQ = ProductionCalculator.calculateProductionQuoteFromQuote(quote, bdb, pdb, this, prefs);
 			
 		if (productionQuotes.contains(cQ)) {
 			return false;

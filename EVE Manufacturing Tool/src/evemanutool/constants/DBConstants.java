@@ -46,7 +46,6 @@ public interface DBConstants {
 	public static final long[] ROLE_HANGARTAKE_ACCESS_MASKS = {8192, 16384, 32768, 65536, 131072, 262144, 524288};
 	public static final long[] ROLE_CONTAINERTAKE_ACCESS_MASKS = {4398046511104L, 8796093022208L, 17592186044416L, 35184372088832L,
 																	70368744177664L, 140737488355328L, 281474976710656L};
-	
 	//Wallet.
 	public static final RefType[] TAX_TYPES = {RefType.MISSION_REWARD, RefType.BOUNTY_PRIZE};
 	
@@ -236,4 +235,9 @@ public interface DBConstants {
 	
 	//Starbases.
 	//POS.
+	
+	//Time constans.
+	public static final long MILLIS_IN_MONTH = 2419200000L; //4 weeks
+	public static final int DAYS_IN_WEEK = 7;
+	public static final int WEEKS_IN_MONTH = 4;
 }

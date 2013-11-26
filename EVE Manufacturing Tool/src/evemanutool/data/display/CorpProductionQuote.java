@@ -1,8 +1,5 @@
 package evemanutool.data.display;
 
-import java.util.ArrayList;
-
-import evemanutool.data.cache.NumberTrendEntry;
 import evemanutool.data.database.ManuQuote;
 
 public class CorpProductionQuote {
@@ -10,9 +7,7 @@ public class CorpProductionQuote {
 	//DB-dependent.
 	private final ManuQuote quote;
 	private final int avgWeekTradedAmount;
-	private final int avgWeekSoldAmount;
-	private ArrayList<NumberTrendEntry> marketTrend;
-	private ArrayList<NumberTrendEntry> volumeTrend;
+	private final int avgWeekCorpSoldAmount;
 	private boolean active;
 	
 	//Stats.
@@ -25,14 +20,11 @@ public class CorpProductionQuote {
 	private int sellTarget;
 
 	public CorpProductionQuote(ManuQuote quote, int avgWeekTradedAmount,
-			int avgWeekSoldAmount, ArrayList<NumberTrendEntry> marketTrend,
-			ArrayList<NumberTrendEntry> volumeTrend, boolean active, int stock,
+			int avgWeekCorpSoldAmount, boolean active, int stock,
 			int onSale, int inProduction, int needToProduce, int sellTarget) {
 		this.quote = quote;
 		this.avgWeekTradedAmount = avgWeekTradedAmount;
-		this.avgWeekSoldAmount = avgWeekSoldAmount;
-		this.marketTrend = marketTrend;
-		this.volumeTrend = volumeTrend;
+		this.avgWeekCorpSoldAmount = avgWeekCorpSoldAmount;
 		this.active = active;
 		this.stock = stock;
 		this.onSale = onSale;
@@ -57,8 +49,8 @@ public class CorpProductionQuote {
 		return avgWeekTradedAmount;
 	}
 	
-	public int getAvgWeekSoldAmount() {
-		return avgWeekSoldAmount;
+	public int getAvgWeekCorpSoldAmount() {
+		return avgWeekCorpSoldAmount;
 	}
 
 	public int getNeedToProduce() {
@@ -89,22 +81,6 @@ public class CorpProductionQuote {
 		return inProduction;
 	}
 
-	public ArrayList<NumberTrendEntry> getMarketTrend() {
-		return marketTrend;
-	}
-
-	public void setMarketTrend(ArrayList<NumberTrendEntry> marketTrend) {
-		this.marketTrend = marketTrend;
-	}
-
-	public ArrayList<NumberTrendEntry> getVolumeTrend() {
-		return volumeTrend;
-	}
-
-	public void setVolumeTrend(ArrayList<NumberTrendEntry> volumeTrend) {
-		this.volumeTrend = volumeTrend;
-	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof CorpProductionQuote) {

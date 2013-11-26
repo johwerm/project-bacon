@@ -25,10 +25,6 @@ public class CorpProductionEntry implements Parsable<CorpProductionEntry>,
 	// Index for invention/reverse engineering priority. Only relevant if
 	// activity != 1.
 	private int specIndex;
-
-	//Trend data.
-	private ArrayList<NumberTrendEntry> marketTrend;
-	private ArrayList<NumberTrendEntry> volumeTrend;
 	
 	public CorpProductionEntry() {}
 	
@@ -60,9 +56,6 @@ public class CorpProductionEntry implements Parsable<CorpProductionEntry>,
 		}else if (activity == IndustryActivity.REVERSE_ENGINERING) {
 			specIndex = Arrays.asList(REV_PRIO_ENUM).indexOf(q.getQuote().getRev().getPrio());
 		}
-		
-		marketTrend = q.getMarketTrend();
-		volumeTrend = q.getVolumeTrend();
 	}
 
 	public int getBpoTypeId() {
@@ -121,30 +114,12 @@ public class CorpProductionEntry implements Parsable<CorpProductionEntry>,
 		this.specIndex = specIndex;
 	}
 	
-	public ArrayList<NumberTrendEntry> getVolumeTrend() {
-		return volumeTrend;
-	}
-	
-	public void setVolumeTrend(ArrayList<NumberTrendEntry> volumeTrend) {
-		this.volumeTrend = volumeTrend;
-	}
-	
-	public ArrayList<NumberTrendEntry> getMarketTrend() {
-		return marketTrend;
-	}
-	
-	public void setMarketTrend(ArrayList<NumberTrendEntry> marketTrend) {
-		this.marketTrend = marketTrend;
-	}
-
 	@Override
 	public String toParseString() {
 		ArrayList<Object> ss = new ArrayList<>();
 		ss.add(getBpoTypeId()); ss.add(getSellTarget()); ss.add(isActive());
 		ss.add(ParseTools.join(getManuMaterials(), LEVEL3_DELIM)); ss.add(getActivity());
 		ss.add(getMatIndex()); ss.add(getSpecIndex());
-		ss.add(ParseTools.joinParsables(getMarketTrend(), LEVEL3_DELIM));
-		ss.add(ParseTools.joinParsables(getVolumeTrend(), LEVEL3_DELIM));
 		return ParseTools.join(ss, LEVEL2_DELIM);
 	}
 
@@ -158,8 +133,6 @@ public class CorpProductionEntry implements Parsable<CorpProductionEntry>,
 		setActivity(IndustryActivity.valueOf(ss[4]));
 		setMatIndex(Integer.parseInt(ss[5]));
 		setSpecIndex(Integer.parseInt(ss[6]));
-		setMarketTrend(ParseTools.breakParsables(ss[7], LEVEL3_DELIM, new NumberTrendEntry()));
-		setVolumeTrend(ParseTools.breakParsables(ss[8], LEVEL3_DELIM, new NumberTrendEntry()));
 		return this;
 	}
 }
