@@ -21,6 +21,7 @@ public class POSDetailsPanel extends JPanel {
 	
 	//Graphical components.
 	private JLabel posName = new JLabel("POS Name");
+	private JLabel posState = new JLabel();
 
 	
 	public POSDetailsPanel() {
@@ -29,22 +30,29 @@ public class POSDetailsPanel extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		//Header.
-		JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 15, 10));
+		JPanel p1 = new JPanel(new FlowLayout(FlowLayout.LEADING, 15, 10));
 		posName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		topPanel.add(posName);
+		p1.add(posName);
+
+		//Info.
+		JPanel p2 = new JPanel(new FlowLayout(FlowLayout.LEADING, 15, 10));
+		p2.add(new JLabel("State"));
+		p2.add(posState);
 		
 		//Material panel.
 		fuelPanel = new ScrollableTablePanel<>(new POSFuelModel());
 		fuelPanel.setBorder(BorderFactory.createTitledBorder("Fuel"));
 		
 		//Add main panels.
-		add(topPanel);
+		add(p1);
+		add(p2);
 		add(fuelPanel);
 	}
 	
 	public void setPOS(POS p) {
 		
 		posName.setText(p.getApiLocation().getItemName());
+		posState.setText(p.getState().name());
 		fuelPanel.setData(p.getFuelList());
 	}
 }
