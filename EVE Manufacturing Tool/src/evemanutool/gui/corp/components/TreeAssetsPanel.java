@@ -89,6 +89,7 @@ public class TreeAssetsPanel extends JPanel{
 					return a.getLocation().getName() + " - " + "Market Deliveries";
 				}else {
 					return (a.getLocation() != null ? a.getLocation().getName() : a.getItem().getName()) +
+							(a.getPlayerName() == null && a.getLocation() != null ? " - " + a.getItem().getName() :  "") +
 							(a.getPlayerName() != null ? " - " + a.getPlayerName() :  "") +
 							(a.getAssets() == null ? " x " + a.getQuantity() : "");
 				}
