@@ -504,7 +504,7 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 			}
 			
 			//Create POS.
-			tmpPOSList.add(new POS(a.getItemID(), idb.getItem(a.getTypeID()), (long) a.getMoonID(),
+			tmpPOSList.add(new POS(a.getItemID(), dataMap.get(a.getItemID()),idb.getItem(a.getTypeID()), (long) a.getMoonID(),
 					ldb.getSystemById((long) a.getLocationID()), a.getStarbaseState(), a.getOnlineTimestamp(),
 					a.getStateTimestamp(), new Time(0), fL));
 		}

@@ -4,8 +4,11 @@ import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import evemanutool.data.display.POS;
+import evemanutool.gui.corp.components.POSDetailsPanel;
 import evemanutool.gui.corp.components.POSModel;
 import evemanutool.gui.general.tabel.ScrollableTablePanel;
 import evemanutool.utils.databases.CorpApiDB;
@@ -18,7 +21,8 @@ public class POSPanel extends JPanel implements GUIUpdater {
 	private CorpApiDB cdb;
 
 	//Internal panels.
-	private ScrollableTablePanel<POS> posList;
+	private ScrollableTablePanel<POS> posPanel;
+	private POSDetailsPanel posDetailsPanel;
 
 	public POSPanel(CorpApiDB cdb) {
 		
@@ -28,20 +32,40 @@ public class POSPanel extends JPanel implements GUIUpdater {
 		//Main layout.
 		setLayout(new GridLayout(1, 2));
 		
-		posList = new ScrollableTablePanel<>(new POSModel());
-		posList.setBorder(BorderFactory.createTitledBorder("Starbases"));
+		posPanel = new ScrollableTablePanel<>(new POSModel());
+		posPanel.setBorder(BorderFactory.createTitledBorder("Starbases"));
+		posPanel.getTable().getSelectionModel().addListSelectionListener(new SelectionListener());
 		
 		//Create details panel.
-		JPanel p2 = new JPanel(new GridLayout(2, 1));
+		posDetailsPanel = new POSDetailsPanel();
+		posDetailsPanel.setBorder(BorderFactory.createTitledBorder("Details"));
 		
 		//Add top level components.
-		add(posList);
-		add(p2);
+		add(posPanel);
+		add(posDetailsPanel);
 	}
 	
 	@Override
 	public void updateGUI(){
 		//POS list.
-		posList.setData(cdb.getPosList());
+		posPanel.setData(cdb.getPosList());
+	}
+	
+	private class SelectionListener implements ListSelectionListener {
+
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			
+			//Sets the selected quote from the showed list (Not the complete).
+			if (!e.getValueIsAdjusting() && 
+					posPanel.getTable().getSelectedRow() >= 0 && 
+					posPanel.getTable().getSelectedRow() < posPanel.getModel().size()) {
+
+				//Get the selected quote.
+				POS selectedPos = posPanel.getModel().getDataAt(posPanel.getSorter().convertRowIndexToModel(posPanel.getTable().getSelectedRow()));
+				//Show quick info.
+				posDetailsPanel.setPOS(selectedPos);
+			}
+		}
 	}
 }

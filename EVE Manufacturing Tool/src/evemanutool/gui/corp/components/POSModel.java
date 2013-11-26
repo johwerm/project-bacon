@@ -9,8 +9,8 @@ import evemanutool.gui.general.tabel.SimpleTableModel;
 public class POSModel extends SimpleTableModel<POS> implements SwingConstants {
 	
 	public POSModel() {
-		super(	new String[] {"Type", "Location", "State", "Fuel Left"},
-				new int[] {LEFT, LEFT, LEFT, LEFT});
+		super(	new String[] {"Name", "Type", "Location", "State", "Fuel Left"},
+				new int[] {LEFT, LEFT, LEFT, LEFT, LEFT});
 	}
 	
 	@Override
@@ -18,7 +18,7 @@ public class POSModel extends SimpleTableModel<POS> implements SwingConstants {
 		
 		switch (columnIndex) {
 		
-			case 0: case 1: case 2: case 3:
+			case 0: case 1: case 2: case 3: case 4:
 				return String.class;
 				
 			default:
@@ -32,15 +32,18 @@ public class POSModel extends SimpleTableModel<POS> implements SwingConstants {
 		
 		switch (col) {
 		case 0:
-			return p.getControlTower().getName();
+			return p.getApiLocation().getItemName();
 
 		case 1:
+			return p.getControlTower().getName();
+
+		case 2:
 			return p.getSystem().getName();
 			
-		case 2:
+		case 3:
 			return p.getState().name();
 			
-		case 3:
+		case 4:
 			return p.getFuelLeft().toString();
 			
 		default:

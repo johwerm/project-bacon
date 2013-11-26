@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.beimin.eveapi.corporation.starbase.list.ApiStarbaseState;
+import com.beimin.eveapi.shared.locations.ApiLocation;
 
 import evemanutool.data.database.Item;
 import evemanutool.data.database.SolarSystem;
@@ -12,9 +13,10 @@ import evemanutool.data.general.Time;
 
 public class POS {
 	
-	private final long ItemId;
+	private final long itemId;
+	private final ApiLocation apiLocation;
 	private final Item controlTower;
-	private long MoonId;
+	private final long moonId;
 	private final SolarSystem system;
 	private final ApiStarbaseState state;
 	private final Date onlineTimestamp;
@@ -22,12 +24,13 @@ public class POS {
 	private final Time fuelLeft;
 	private final ArrayList<Fuel> fuelList;
 	
-	public POS(long itemId, Item controlTower, long moonId, SolarSystem system,
+	public POS(long itemId, ApiLocation apiLocation, Item controlTower, long moonId, SolarSystem system,
 			ApiStarbaseState state, Date onlineTimestamp, Date stateTimestamp, 
 			Time fuelLeft, Collection<Fuel> fuelList) {
-		ItemId = itemId;
+		this.itemId = itemId;
+		this.apiLocation = apiLocation;
 		this.controlTower = controlTower;
-		MoonId = moonId;
+		this.moonId = moonId;
 		this.system = system;
 		this.state = state;
 		this.onlineTimestamp = onlineTimestamp;
@@ -37,15 +40,15 @@ public class POS {
 	}
 
 	public long getMoonId() {
-		return MoonId;
-	}
-
-	public void setMoonId(long moonId) {
-		MoonId = moonId;
+		return moonId;
 	}
 
 	public long getItemId() {
-		return ItemId;
+		return itemId;
+	}
+	
+	public ApiLocation getApiLocation() {
+		return apiLocation;
 	}
 
 	public Item getControlTower() {

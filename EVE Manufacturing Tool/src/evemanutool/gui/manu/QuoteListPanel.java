@@ -127,6 +127,7 @@ public class QuoteListPanel extends JPanel implements GUIUpdater, SwingConstants
 			if (!e.getValueIsAdjusting() && 
 					quotePanel.getTable().getSelectedRow() >= 0 && 
 					quotePanel.getTable().getSelectedRow() < quotePanel.getModel().size()) {
+				
 				bI.setBpo(quotePanel.getModel().getDataAt(quotePanel.getSorter().convertRowIndexToModel(quotePanel.getTable().getSelectedRow())).getBpo());
 			}
 		}
