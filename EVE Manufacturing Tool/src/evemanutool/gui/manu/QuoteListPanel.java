@@ -3,6 +3,7 @@ package evemanutool.gui.manu;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -87,6 +88,9 @@ public class QuoteListPanel extends JPanel implements GUIUpdater, SwingConstants
 			index = quotePanel.getSorter().convertRowIndexToView(index);
 			//Select the quote.
 			quotePanel.getTable().setRowSelectionInterval(index, index);
+			//Scroll to row.
+			quotePanel.getTable().scrollRectToVisible(
+					new Rectangle(quotePanel.getTable().getCellRect(index, 0, true)));
 			
 			//Operation successful, return true.
 			return true;
