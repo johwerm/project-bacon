@@ -145,7 +145,7 @@ public class ProductionPanel extends JPanel implements GUIUpdater, SwingConstant
 				marketTrend.setTradeHistory(pdb.getSellTH(selectedQuote.getQuote().getBpo().getProduct().getTypeId()), HistoryType.AVG);
 				volumeTrend.setTradeHistory(pdb.getSellTH(selectedQuote.getQuote().getBpo().getProduct().getTypeId()), HistoryType.VOLUME);
 				//Show quick info.
-				quotePanel.selectQuote(selectedQuote);
+				quotePanel.selectQuote(selectedQuote.getQuote());
 			}
 		}
 	}
