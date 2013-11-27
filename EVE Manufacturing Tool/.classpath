@@ -2,22 +2,22 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/libs/opencsv/opencsv-2.3.jar"/>
-	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/libs/eveapi/eveapi-5.1.2.jar" sourcepath="D:/Dokument/Java/Libs/EVE api/eveapi-5.1.2-sources.jar">
+	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/lib/opencsv/opencsv-2.3.jar"/>
+	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/lib/eveapi/eveapi-5.1.2.jar" sourcepath="D:/Dokument/Java/Libs/EVE api/eveapi-5.1.2-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/D:/Dokument/Java/EVE api/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/libs/slf4-api/slf4j-api-1.6.1.jar"/>
-	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/libs/commons-logging/commons-logging-1.1.2.jar"/>
-	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/libs/commons-configuration/commons-configuration-1.9.jar">
+	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/lib/slf4-api/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/lib/commons-logging/commons-logging-1.1.2.jar"/>
+	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/lib/commons-configuration/commons-configuration-1.9.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/D:/Dokument/Java/Libs/commons-configuration-1.9/commons-configuration-1.9-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/libs/j-free-chart/jfreechart-1.0.14.jar"/>
-	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/libs/j-free-chart/jcommon-1.0.17.jar"/>
-	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/libs/commons-lang/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/libs/slf4-api/slf4j-simple-1.6.1.jar"/>
+	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/lib/j-free-chart/jfreechart-1.0.14.jar"/>
+	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/lib/j-free-chart/jcommon-1.0.17.jar"/>
+	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/lib/commons-lang/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="D:/Dokument/Git/project-bacon/EVE Manufacturing Tool/lib/slf4-api/slf4j-simple-1.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
