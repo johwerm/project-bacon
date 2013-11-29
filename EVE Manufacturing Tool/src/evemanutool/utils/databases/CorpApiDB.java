@@ -192,8 +192,14 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 		readFromFile();
 		
 		//Create and check the API-key.
-		auth = new ApiAuthorization(prefs.getAPIId(API.ID), prefs.getAPIKey(API.KEY)); //Move to prefs.
+		try {
+			auth = new ApiAuthorization(prefs.getAPIId(API.ID), prefs.getAPIKey(API.KEY)); //Move to prefs.
+		} catch (Exception e) {
+			//API access fail.
+			throw new ApiServerException(e.getMessage());
+		}
 		if (!checkAPIAuthoraization(auth)) {
+			//Only accessMask check has failed.
 			throw new ApiServerException(API_AUTH_ERROR_MESSAGE);
 		}
 		
