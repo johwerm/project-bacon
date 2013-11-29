@@ -392,7 +392,7 @@ public class PrefsDialog extends JDialog implements UserPrefConstants, DBConstan
 		pack();
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setLocation(EMT.MAIN.getLocation());
+		setLocationRelativeTo(EMT.MAIN);
 		setVisible(true);
 	}	
 	
