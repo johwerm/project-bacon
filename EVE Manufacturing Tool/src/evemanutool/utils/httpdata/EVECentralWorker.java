@@ -65,7 +65,6 @@ public class EVECentralWorker extends ProgressWorker {
 			sellTypeIds.remove(id);
 			buyTypeIds.remove(id);
 		}
-		
 		doCommonQueries();
 		doUniqueQueries();
 		
@@ -146,9 +145,9 @@ public class EVECentralWorker extends ProgressWorker {
 		ArrayList<Integer> iL = new ArrayList<>();
 		
 		//Pull some ids to make a query.
-		while(!commonTypeIds.isEmpty() && iL.size() < MAX_QUERIES){
-			iL.add(commonTypeIds.get(0));
-			commonTypeIds.remove(0);
+		while(!typeIds.isEmpty() && iL.size() < MAX_QUERIES){
+			iL.add(typeIds.get(0));
+			typeIds.remove(0);
 		}
 		return iL;
 	}
