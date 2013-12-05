@@ -118,7 +118,8 @@ public class EMT extends JFrame implements UserPrefConstants, DBConstants, GUICo
 	//Menubar.
 	private JMenuItem prefItem;
 	private JMenuItem exitItem;
-	private JMenuItem updateItem;
+	private JMenuItem updateMarketItem;
+	private JMenuItem updateCorpItem;
 	private JMenuItem creditsItem;
 	private AnimatedLabel statusLabel;
 
@@ -350,17 +351,21 @@ public class EMT extends JFrame implements UserPrefConstants, DBConstants, GUICo
 		menubar.add(helpMenu);
 		
 		//Create menuItems.
-		prefItem = new JMenuItem("Preferences");
-		prefItem.addActionListener(ml);
-		editMenu.add(prefItem);
-		
-		updateItem = new JMenuItem("Force Market Update");
-		updateItem.addActionListener(ml);
-		fileMenu.add(updateItem);
+		updateMarketItem = new JMenuItem("Force Market Update");
+		updateMarketItem.addActionListener(ml);
+		fileMenu.add(updateMarketItem);
+
+		updateCorpItem = new JMenuItem("Update Corp Data");
+		updateCorpItem.addActionListener(ml);
+		fileMenu.add(updateCorpItem);
 		
 		exitItem = new JMenuItem("Exit");
 		exitItem.addActionListener(ml);
 		fileMenu.add(exitItem);
+
+		prefItem = new JMenuItem("Preferences");
+		prefItem.addActionListener(ml);
+		editMenu.add(prefItem);
 
 		creditsItem = new JMenuItem("Credits");
 		creditsItem.addActionListener(ml);
@@ -530,7 +535,7 @@ public class EMT extends JFrame implements UserPrefConstants, DBConstants, GUICo
 				exitHandlers();
 				//Close GUI.
 				dispose();
-			}else if (i == updateItem) {
+			}else if (i == updateMarketItem) {
 				if (pdb.forceUpdateMarketData()) {
 					//Update commenced, do nothing.
 				}else {
@@ -538,6 +543,8 @@ public class EMT extends JFrame implements UserPrefConstants, DBConstants, GUICo
 					JOptionPane.showMessageDialog(EMT.MAIN, "Updates are limited to ease server load, please wait!\n" +
 							"(" + pdb.getMinsToNextMarketUpdate() + " min)", "Info", JOptionPane.INFORMATION_MESSAGE);
 				}
+			}else if (i == updateCorpItem) {
+				D_HANDLER.updateDBAtStage(cdb, Stage.RAW);
 			}else if (i == creditsItem) {
 				//Show credits.
 				JOptionPane.showMessageDialog(EMT.MAIN, CREDITS_TEXT, "Credits", JOptionPane.PLAIN_MESSAGE);
