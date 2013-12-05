@@ -352,19 +352,20 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 		for (ApiMarketOrder a : rawOrders) {
 			//Get station.
 			s = ldb.getStationById(a.getStationID());
-			if (a.getBid() == 1 &&
-					(a.getIssued().getTime() + (((long) a.getDuration()) * 24 * 3600 * 1000) - new Date().getTime()) > 0) {
-				//Buy order.
-				//Avoid expired orders.
-				tmpBuyOrders.add(new MarketOrder(a, getCorpMemberFromId(a.getCharID()),
-						s, ldb.getRegionById(s.getRegionId()), idb.getItem(a.getTypeID()), 
-						corpInfo.getWalletDivisions().get(a.getAccountKey())));
-				
-			}else {
-				//Sell order.
-				tmpSellOrders.add(new MarketOrder(a, getCorpMemberFromId(a.getCharID()),
-						s, ldb.getRegionById(s.getRegionId()), idb.getItem(a.getTypeID()), 
-						corpInfo.getWalletDivisions().get(a.getAccountKey())));
+			if ((a.getIssued().getTime() + (((long) a.getDuration()) * 24 * 3600 * 1000) - new Date().getTime()) > 0) {
+				if (a.getBid() == 1) {
+					//Buy order.
+					//Avoid expired orders.
+					tmpBuyOrders.add(new MarketOrder(a, getCorpMemberFromId(a.getCharID()),
+							s, ldb.getRegionById(s.getRegionId()), idb.getItem(a.getTypeID()), 
+							corpInfo.getWalletDivisions().get(a.getAccountKey())));
+					
+				}else {
+					//Sell order.
+					tmpSellOrders.add(new MarketOrder(a, getCorpMemberFromId(a.getCharID()),
+							s, ldb.getRegionById(s.getRegionId()), idb.getItem(a.getTypeID()), 
+							corpInfo.getWalletDivisions().get(a.getAccountKey())));
+				}
 			}
 		}
 		//Set new database to global reference.
