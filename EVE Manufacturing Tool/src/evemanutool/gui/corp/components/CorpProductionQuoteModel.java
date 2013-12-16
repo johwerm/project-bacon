@@ -22,7 +22,7 @@ public class CorpProductionQuoteModel extends SimpleTableModel<CorpProductionQuo
 	private GUIUpdater supplyPanel;
 	
 	public CorpProductionQuoteModel(CorpApiDB cdb, GUIUpdater supplyPanel) {
-		super(	new String[] {"Name", "Market Volume/week", "Corp Sold/week", "Production Aim", "Left To Manufacture", "In Production", "Left To Sell", "On Sale", "Activated"},
+		super(	new String[] {"Name", "Market Volume/week", "Corp Sold/week", "On Sale Aim", "Left To Manufacture", "In Production", "Left To Sell", "On Sale", "Activated"},
 				new int[] {LEFT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, RIGHT, CENTER},
 				new int[] {PRODUCTION_AIM_INDEX, ACTIVE_INDEX});
 		this.cdb = cdb;

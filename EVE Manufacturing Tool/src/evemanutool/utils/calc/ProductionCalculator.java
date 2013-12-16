@@ -39,16 +39,6 @@ public class ProductionCalculator implements UserPrefConstants, DBConstants {
 
 	public static CorpProductionQuote calculateProductionQuoteFromQuote(ManuQuote quote,  BlueprintDB bdb, 
 			PriceDB pdb, CorpApiDB cdb, Preferences prefs) {
-		//Temporary variables.
-		ArrayList<ManuQuote> matQuotes = new ArrayList<>();
-		
-		//Create produced-material quotes.
-		for (Material m : quote.getMatList()) {
-			if (m.isProduced()) {
-				matQuotes.add(QuoteCalculator.calculateQuote(bdb.getByProductId(m.getItem().getTypeId()), (int) m.getAmount(), null, pdb, bdb, prefs,
-						quote.getPrio()));
-			}
-		}
 		
 		//Calculate production numbers.
 		int stock = calculateItemStock(AssetCalculator.getFlatAssetsInCorpHangar(

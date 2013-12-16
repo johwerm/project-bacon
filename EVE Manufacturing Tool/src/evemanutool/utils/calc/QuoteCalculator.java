@@ -99,12 +99,12 @@ public class QuoteCalculator implements UserPrefConstants, DBConstants{
 			if (m.isRecycled()) {
 				//Add to subtraction-list if item is recycled.
 				for (Material m1 : m.getItem().getBaseMaterials()) {
-					eMRL.add(new Material(m1.getItem(), m1.getAmount() * runs));
+					eMRL.add(new Material(m1.getItem(), m1.getAmount()));
 				}
 			}
 			//Add skill waste.
 			eML.add(new Material(m.getItem(), (m.getAmount() + 
-					(int) ((((25 - (5 * SKILL_LEVEL_VALUE[prefs.getSkillLvlIndex(Skill.PRODUCTION_EFFICIENCY)])) * m.getAmount()) / 100) + 0.5)) * runs));
+					(int) ((((25 - (5 * SKILL_LEVEL_VALUE[prefs.getSkillLvlIndex(Skill.PRODUCTION_EFFICIENCY)])) * m.getAmount()) / 100) + 0.5))));
 		}
 		
 		//Calculate the correct amount of base materials including, skill and Me-based waste.

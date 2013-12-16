@@ -992,7 +992,9 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 				if (cMQ.isActive()) {
 					for (Material m1 : cMQ.getQuote().getMatList()) {			
 						//Set the amount of material.
-						m = new Material(m1.getItem(), m1.getAmount() * cMQ.getSellTarget(), 
+						m = new Material(m1.getItem(), m1.getAmount() * 
+								//Amount to produce depending on production chain.
+								(cMQ.getSellTarget() - cMQ.getStock() - cMQ.getInProduction() - cMQ.getOnSale()), 
 								m1.isRecycled(), m1.getPrice(), m1.canBeManufactured(), m1.isProduced(), m1.getManufactureQuote());
 						
 						if (m.isProduced()) {
