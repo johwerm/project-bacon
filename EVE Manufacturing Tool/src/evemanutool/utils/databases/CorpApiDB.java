@@ -405,12 +405,13 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 		for (ApiLocation aL : ldb.getContainerNames(auth, idList)) {
 			dataMap.put(aL.getItemID(), aL);
 		}
+		
 		//Set names.
-		ApiLocation alocation;
+		ApiLocation aL;
 		for (Asset a : flatAssets) {
-			alocation = dataMap.get(a.getItemID());
-			if (alocation != null) {
-				a.setPlayerName(alocation.getItemName());
+			aL = dataMap.get(a.getItemID());
+			if (aL != null) {
+				a.setPlayerName(aL.getItemName());
 			}
 		}
 		
@@ -553,7 +554,14 @@ public class CorpApiDB extends Database implements DBConstants, UserPrefConstant
 			}
 			
 			//Create POS.
-			tmpPOSList.add(new POS(a.getItemID(), dataMap.get(a.getItemID()),idb.getItem(a.getTypeID()), (long) a.getMoonID(),
+			//Make sure that ApiLocation isn't null.
+			aL = dataMap.get(a.getItemID());
+			if (aL == null) {
+				aL = new ApiLocation();
+				aL.setItemName("Unknown");
+			}
+			
+			tmpPOSList.add(new POS(a.getItemID(), aL ,idb.getItem(a.getTypeID()), (long) a.getMoonID(),
 					ldb.getSystemById((long) a.getLocationID()), a.getStarbaseState(), a.getOnlineTimestamp(),
 					a.getStateTimestamp(), new Time(hours * 3600 * 1000), fL, fRL));
 		}

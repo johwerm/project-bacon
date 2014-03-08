@@ -170,9 +170,9 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 401;399;Caldari;Caldari interceptor designs.;;1
 402;399;Gallente;Gallente interceptor designs.;;1
 403;399;Minmatar;Minmatar interceptor designs.;;1
-404;9;Deployable Equipment;Chuck it into space and leave it there. If you like.;16;0
+404;477;Deployable Structures;Chuck it into space and leave it there. If you like.;16;0
 405;404;Warp Disruption Fields ;Trap a fly in your web.;;1
-406;209;Deployable Equipment;Blueprints of deployable equipment.;2703;0
+406;1338;Deployable Structures;Blueprints of deployable structures.;2703;0
 407;406;Warp Disruption Fields;Blueprints of Warp disruption fields.;;1
 408;204;Interceptors;Blueprints of interceptor-class vessels.;2703;0
 410;408;Amarr;Blueprints of Amarr interceptor designs.;;1
@@ -237,7 +237,7 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 473;469;Minmatar;Minmatar battlecruiser designs.;;1
 475;;Manufacture & Research;Everything the budding scientist or builder needs to set up shop. ;1436;0
 476;1033;Ice Products;Materials harvested from interstellar ice ores.;;1
-477;;Starbase & Sovereignty Structures;Your interstellar home-away-from-home. ;2222;0
+477;;Structures;Your interstellar home-away-from-home. ;2222;0
 478;1285;Control Towers;The starbase's backbone.;;1
 479;480;Missile Batteries;Stationary missile batteries for starbase defense.;;1
 480;1285;Weapon Batteries;Stationary weapon batteries for starbase defense.;2222;0
@@ -930,28 +930,28 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 1335;1332;Refined Commodities;The third tier of planetary materials.;;1
 1336;1332;Specialized Commodities;The fourth tier of planetary materials.;;1
 1337;1332;Advanced Commodities;The firth and final tier of planetary materials.;;1
-1338;2;Starbase & Sovereignty Structures;Blueprints of Starbase and Sovereignty Structures.;2703;0
-1339;1338;Control Towers;Blueprints of Control Towers.;;1
-1340;1338;Assembly Arrays;Blueprints of Assembly Arrays.;;1
-1341;1338;Corporate Hangar Arrays;Blueprints of Corporate Hangar Arrays.;;1
-1342;1338;Cynosural Generator Arrays;Blueprints of Cynosural Generator Arrays.;;1
-1343;1338;Cynosural System Jammers;Blueprints of Cynosural System Jammers.;;1
+1338;2;Structures;Blueprints of Starbase structures, Sovereignty structures and Deployable structures.;2703;0
+1339;1841;Control Towers;Blueprints of Control Towers.;;1
+1340;1841;Assembly Arrays;Blueprints of Assembly Arrays.;;1
+1341;1841;Corporate Hangar Arrays;Blueprints of Corporate Hangar Arrays.;;1
+1342;1841;Cynosural Generator Arrays;Blueprints of Cynosural Generator Arrays.;;1
+1343;1841;Cynosural System Jammers;Blueprints of Cynosural System Jammers.;;1
 1344;1534;Electronic Warfare Batteries;Blueprints of Electronic Warfare Batteries.;;1
 1345;1534;Energy Neutralization Batteries;Blueprints of Energy Neutralization Batteries.;;1
-1346;1338;Jump Bridge;Blueprints of Jump Bridge.;;1
+1346;1841;Jump Bridge;Blueprints of Jump Bridge.;;1
 1347;1534;Hybrid Batteries;Blueprints of Hybrid Batteries.;;1
 1348;1534;Laser Batteries;Blueprints of Laser Batteries.;;1
 1349;1534;Missile Batteries;Blueprints of Missile Batteries.;;1
 1350;1534;Projectile Batteries;Blueprints of Projectile Batteries.;;1
-1351;1338;Reactors;Blueprints of Reactors.;;1
-1352;1338;Moon Harvesting Arrays;Blueprints of Moon Harvesting Arrays.;;1
-1353;1338;Refining Arrays;Blueprints of Refining Arrays.;;1
-1354;1338;Shield Hardening Arrays;Blueprints of Shield Hardening Arrays.;;1
-1355;1338;Silos;Blueprints of Silos.;;1
+1351;1841;Reactors;Blueprints of Reactors.;;1
+1352;1841;Moon Harvesting Arrays;Blueprints of Moon Harvesting Arrays.;;1
+1353;1841;Refining Arrays;Blueprints of Refining Arrays.;;1
+1354;1841;Shield Hardening Arrays;Blueprints of Shield Hardening Arrays.;;1
+1355;1841;Silos;Blueprints of Silos.;;1
 1356;1338;Sovereignty Structures;Blueprints of Sovereignty Structures.;;1
 1357;800;Station Components;Blueprints of Station Components.;;1
 1358;211;Nanite Repair Paste;Blueprints of Nanite Repair Paste.;;1
-1359;1338;Mobile Laboratories;Blueprints of Mobile Laboratories.;;1
+1359;1841;Mobile Laboratories;Blueprints of Mobile Laboratories.;;1
 1361;4;Frigates;The smallest and fastest of all starships.;1443;0
 1362;1361;Faction Frigates;Frigates designed by specific factions.;1443;0
 1364;1361;Advanced Frigates;Frigate variants intended for specialized purposes.;1443;0
@@ -1055,8 +1055,8 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 1531;1530;Light Scout Drones;Blueprints of light scout drone designs.;;1
 1532;1530;Medium Scout Drones;Blueprints of medium scout drone designs.;;1
 1533;1530;Sentry Drones;Blueprints of sentry drone designs.;;1
-1534;1338;Weapon Batteries;Weapon Batteries;2703;0
-1535;1338;Ship Maintenance Arrays;Ship Maintenance Arrays;;1
+1534;1841;Weapon Batteries;Weapon Batteries;2703;0
+1535;1841;Ship Maintenance Arrays;Ship Maintenance Arrays;;1
 1536;214;Armor Repairers;Blueprints for Armor Repairers;;1
 1537;214;Hull Repairers;Blueprints for Hull Repairers;;1
 1538;214;Remote Hull Repairers;Blueprints for Remote Hull Repairers;;1
@@ -1117,12 +1117,12 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 1594;1591;Gallente;Gallente;;1
 1595;1591;Minmatar;Minmatar;;1
 1596;1035;Outpost Construction Platforms;Outpost Construction Platforms;;1
-1598;99;Orbital Bombardment;;;1
-1599;101;Orbital Bombardment;;;1
-1600;100;Orbital Bombardment;;;1
-1601;300;Orbital Bombardment;;;1
-1602;301;Orbital Bombardment;;;1
-1603;299;Orbital Bombardment;;;1
+1598;99;Orbital Strike;;;1
+1599;101;Orbital Strike;;;1
+1600;100;Orbital Strike;;;1
+1601;300;Orbital Strike;;;1
+1602;301;Orbital Strike;;;1
+1603;299;Orbital Strike;;;1
 1610;1112;Amarr Subsystems;Amarr Subsystems;20959;0
 1611;1610;Amarr Electronic Subsystems;Amarr Electronic Subsystems;3626;1
 1612;4;Special Edition Ships;Rare and visually distinct ships of interest to collectors.;1443;0
@@ -1185,7 +1185,7 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 1681;535;EM Armor Hardeners;EM Armor Hardeners;1396;1
 1682;541;Energized Explosive Plating;Energized Explosive Plating;1395;1
 1683;541;Energized Thermal Plating;Energized Thermal Plating;1394;1
-1684;541;Energized Em Plating;Energized Em Plating;1396;1
+1684;541;Energized EM Plating;Energized EM Plating;1396;1
 1685;541;Energized Kinetic Plating;Energized Kinetic Plating;1393;1
 1686;541;Energized Adaptive Plating;Energized Adaptive Plating;2066;1
 1687;14;Energized Armor Layering;Energized Armor Layering;;1
@@ -1202,7 +1202,7 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 1698;1612;Special Edition Battlecruisers;Battlecruisers which have been offered to capsuleers on occasion for limited periods.;;1
 1699;1612;Special Edition Cruisers;Cruisers which have been offered to capsuleers on occasion for limited periods.;;1
 1700;19;Security Tags;Security Tags;2040;1
-1701;1338;Personal Hangar Arrays;Blueprints of Personal Hangar Arrays.;;1
+1701;1841;Personal Hangar Arrays;Blueprints of Personal Hangar Arrays.;;1
 1702;1285;Personal Hangar Arrays;A large hangar structure, for easy storage of materials and modules.;;1
 1703;1374;Faction Battlecruisers;Battlecruisers designed by specific factions.;1443;0
 1704;1703;Navy Faction;Navy faction battlecruiser designs.;;1
@@ -1320,6 +1320,13 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 1837;1612;Special Edition Recon Ships;;;1
 1838;1612;Special Edition Covert Ops;;;1
 1840;19;Covert Research Tools;;2039;1
+1841;1338;Starbase structures;Blueprints of deployable structures.;2703;0
+1842;406;Mobile Micro Jump Units;;;1
+1843;406;Mobile Scan Inhibitors;;;1
+1844;404;Mobile Micro Jump Units;;;1
+1845;404;Mobile Scan Inhibitors;;;1
+1846;19;Bounty Reimbursement Tags;Tags to turn in for ISK;;1
+1847;404;Encounter Surveillance Systems;Deployables that monitor bounty payout activity in the system;;1
 350001;;Infantry Gear;Specialist equipment for Infantry;10847;0
 353557;353567;Grenades;Hand thrown explosive devices.;;0
 353561;350001;Augmentations;Augmentations designed to increase cognitive ability allowing temporary usage of certain skills or increased skill point accrual.;;0
@@ -1337,8 +1344,8 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 353574;353563;Nanohives;;;0
 353575;353563;Drop Uplinks;;;0
 353576;353563;Repair Tools;;;0
-353579;350001;Dropsuit Modules;Modules are interchangeable hardware components that enhance or otherwise alter the functionality of the dropsuit they are fitted to.;;0
-353580;350001;Vehicle Modules;Modules are interchangeable hardware components that enhance or otherwise alter the functionality of the vehicle they are fitted to.;;0
+353579;366335;Dropsuit Modules;Modules are interchangeable hardware components that enhance or otherwise alter the functionality of the dropsuit they are fitted to.;;0
+353580;366335;Vehicle Modules;Modules are interchangeable hardware components that enhance or otherwise alter the functionality of the vehicle they are fitted to.;;0
 353581;353579;Shield;;;0
 353582;353579;Armor;;;0
 353583;353579;Biotics;;;0
@@ -1364,9 +1371,7 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 353653;353566;Dropships;;;0
 353657;353651;Standard;;;1
 353664;353652;Standard;;;1
-353669;353652;Logistics;;;1
 353671;353653;Standard;;;1
-353676;353653;Logistics;;;1
 353681;353633;Weaponry;Hardwired neural augmentations used to train new abilities.;;0
 353684;353681;Weapons;Hardwired neural augmentations used to train new abilities.;;1
 353706;353633;Dropsuit Command;Hardwired neural augmentations used to train new abilities.;;0
@@ -1431,17 +1436,11 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 354434;353586;Damage Amplifiers;;;1
 354444;353588;Armor Plates;;;0
 354448;353588;Armor Repairers;;;0
-354450;353588;Resistance Plates;Passively increases resistance to armor damage.;;0
 354453;353589;CPU Upgrades;;;1
-354454;353590;Damage Control Systems;;;1
 354455;353590;Mobile CRUs;;;1
 354458;353590;Power Grid Upgrades;;;1
-354459;353590;Power Diagnostic Systems;;;1
 354460;353591;Afterburners (Aerial);These speed boost modules only apply to aerial vehicles;;1
 354461;353591;Boosts (Ground);These speed boost modules only apply to ground vehicles;;1
-354462;353591;Overdrives (All Vehicles); ;;1
-354464;353587;Resistance Amplifiers;;;0
-354468;353587;Shield Regenerators;;;0
 354469;353592;Damage Amplifiers;;;0
 354471;353587;Shield Boosters;;;0
 354478;353565;Blaster;;;0
@@ -1450,8 +1449,6 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 354489;354478;Large;;;0
 354490;353608;Small;;;0
 354491;353608;Large;;;0
-354492;353588;Remote Armor Repairers;Repair armor hitpoints to surrounding units.;;0
-354493;353587;Shield Transporters;;;0
 354534;353561;Boosters;;;0
 354542;354534;Passive Boosters;;;1
 354543;354534;Active Boosters;;;1
@@ -1502,17 +1499,9 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 356436;356433;Prototype;;;1
 356575;354469;Hybrid Damage Amplifiers;;;0
 356576;354469;Missile Damage Amplifiers;;;0
-356579;356575;Large Hybrid Damage;;;1
-356580;356575;Systemic Hybrid Damage;;;1
-356581;356575;Small Hybrid Damage;;;1
-356582;356576;Systemic Missile Damage;;;1
-356583;356576;Large Missile Damage;;;1
-356584;356576;Small Missile Damage;;;1
-356585;353592;Passive Heat Sinks;;;0
-356586;353592;Spool Reduction;;;0
-356587;353592;Tracking Enhancers;;;0
-356588;353592;Tracking Computers;;;0
-356589;353592;Active Heat Sinks;;;0
+356579;356575;Blaster Damage Amplifiers;;;1
+356581;356575;Railgun Damage Amplifiers;;;1
+356584;356576;Missile Damage Amplifiers;;;1
 356597;353587;Shield Hardeners;;;0
 356916;353589;Scanners;;;1
 356960;354491;Standard;;;1
@@ -1533,28 +1522,15 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 356979;353613;Standard;;;1
 356980;353613;Advanced;;;1
 356981;353613;Prototype;;;1
-356990;356589;Active Heatsinks;;;1
-356991;356585;Heatsinks;;;1
-356992;356586;Spool Time Reduction;;;1
-356993;356588;Tracking Computer (Active);;;1
-356994;356587;Tracking Enhancer (Passive);;;1
-357118;354450;Armor Resistance Plating;Passively increases resistance to armor damage;;1
 357120;357121;Armor Hardeners;Actively increases resistance to armor damage.;;1
 357121;353588;Armor Hardeners;;;0
-363304;354444;180mm Armor Plates;Heavy armor plating;;1
 363305;354444;120mm Armor Plates;Moderate armor plating;;1
 363306;354444;60mm Armor Plates;Light armor plating;;1
-363438;354492;Light; ;;1
-363439;354492;Heavy; ;;1
 363440;354448;Light; ;;1
 363441;354448;Heavy; ;;1
 363442;353587;Shield Extenders; ;;0
-363446;354464;Resistance Amplifiers; ;;1
-363447;354468;Shield Regenerators; ;;1
 363448;354471;Light; ;;1
 363449;354471;Heavy; ;;1
-363450;354493;Light; ;;1
-363451;354493;Heavy; ;;1
 363452;356597;Shield Hardeners; ;;1
 363456;363442;Heavy;Heavy duty shield extenders add a large amount of shield hit points at the cost of increased CPU and power grid usage.;;1
 363457;363442;Light;Lightweight shield extenders add a moderate amount of shield hit points with less cost to CPU and power grid usage.;;1
@@ -1592,8 +1568,6 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 364492;364491;Standard;;;1
 364493;364491;Advanced;;;1
 364494;364491;Prototype;;;1
-364760;353651;Enforcer;Optimized for ranged combat, the Enforcer can bombard far away targets, but is susceptible at close-range ;;1
-364765;353652;Scout;The Scout is a high speed, highly maneuverable vehicle optimized for guerilla warfare ;;1
 364768;353653;Assault;The Assault is a low-level aerial attack craft effective against aerial and ground units;;1
 364885;364044;Basic;Basic light frame dropsuits.;;0
 364886;364885;Standard;Standard light frames.;;1
@@ -1607,7 +1581,7 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 364894;364893;Standard;Standard heavy frames.;;1
 364895;364893;Advanced;Advanced heavy frames.;;1
 364896;364893;Prototype;Prototype heavy frames.;;1
-364911;350001;Featured fits;Pre-packaged, ready to deploy dropsuit fittings: The answer to any battlefield problem you may encounter.;;0
+364911;350001;Packaged Fits;Pre-packaged, ready to deploy dropsuit and vehicle fittings: The answer to any battlefield problem you may encounter.;;0
 364912;365947;Scout;;;1
 364913;365947;Assault;;;1
 364914;365947;Heavy;;;1
@@ -1626,9 +1600,106 @@ MARKETGROUPID;PARENTGROUPID;MARKETGROUPNAME;DESCRIPTION;ICONID;HASTYPES
 365282;365278;Prototype;Prototype commando dropsuits.;;1
 365496;353633;Dropsuit Upgrades;Hardwired neural augmentations used to train new abilities.;;0
 365497;353633;Vehicle Upgrades;Hardwired neural augmentations used to train new abilities.;;0
+365765;364047;Combat Rifles;Combat Rifles.;;0
+365766;365765;Standard;Standard.;;1
+365767;365765;Advanced;Advanced.;;1
+365768;365765;Prototype;Prototype.;;1
+365769;364047;Rail Rifles;Rail Rifles.;;0
+365770;365769;Standard;Standard.;;1
+365771;365769;Advanced;Advanced.;;1
+365772;365769;Prototype;Prototype.;;1
+365898;353592;Ammo Expansion Units;Ammo Expansion Units.;;0
+365899;365898;Blaster Ammo Expansion Units;Blaster Ammo Expansion Units.;;1
+365900;365898;Missile Launcher Ammo Expansion Units;Missile Launcher Ammo Expansion Units.;;1
+365901;365898;Railgun Ammo Expansion Units;Railgun Ammo Expansion Units.;;1
 365946;364911;Fitted Vehicles;Fitted Vehicles.;;0
 365947;364911;Fitted Dropsuits;Fitted Dropsuits;;0
 365948;365947;Logistics;Logistics.;;1
 365949;365946;Dropship;Dropship;;1
 365950;365946;Light Attack Vehicle (LAV);LAV.;;1
 365951;365946;Heavy Attack Vehicle (HAV);HAV.;;1
+365995;350001;Loyalty Store;An area of the market reserved for items that require loyalty points earned in Factional Contracts.;;0
+365996;365995;Gallente Store;The Gallente store contains items that require loyalty points from the Federal Marines.;;0
+365997;365995;Amarr Store;The Amarr store contains items that require loyalty points from the Imperial Guard.;;0
+365998;365995;Minmatar Store;The Minmatar store contains items that require loyalty points from the Republic Command.;;0
+365999;365995;Caldari Store;The Caldari store contains items that require loyalty points from the State Peacekeepers.;;0
+366021;354534;Faction Booster Amarr;;;1
+366173;365996;Dropsuits;;;0
+366174;365997;Dropsuits;;;0
+366175;365998;Dropsuits;;;0
+366177;365999;Dropsuits;;;0
+366178;365996;Dropsuit Weapons;;;0
+366179;365997;Dropsuit Weapons;;;0
+366180;365998;Dropsuit Weapons;;;0
+366181;365999;Dropsuit Weapons;;;0
+366182;365996;Vehicles;;;0
+366185;365999;Vehicles;;;0
+366186;365996;Vehicle Turrets;;;0
+366189;365999;Vehicle Turrets;;;0
+366190;365996;Dropsuit Modules;;;0
+366191;365997;Dropsuit Modules;;;0
+366193;365998;Dropsuit Modules;;;0
+366194;365999;Dropsuit Modules;;;0
+366197;366174;Standard;;;1
+366198;366174;Advanced;;;1
+366199;366174;Prototype;;;1
+366200;366173;Standard;;;1
+366201;366173;Advanced;;;1
+366202;366173;Prototype;;;1
+366203;366175;Standard;;;1
+366204;366175;Advanced;;;1
+366205;366175;Prototype;;;1
+366206;366177;Standard;;;1
+366207;366177;Advanced;;;1
+366208;366177;Prototype;;;1
+366209;366182;Standard;;;1
+366210;366186;Standard;;;1
+366211;366186;Advanced;;;1
+366212;366186;Prototype;;;1
+366213;366189;Standard;;;1
+366214;366189;Advanced;;;1
+366215;366189;Prototype;;;1
+366216;366185;Standard;;;1
+366219;366181;Standard;;;1
+366220;366181;Advanced;;;1
+366221;366181;Prototype;;;1
+366222;366178;Standard;;;1
+366223;366178;Advanced;;;1
+366224;366178;Prototype;;;1
+366253;366190;Standard;;;1
+366254;366190;Advanced;;;1
+366255;366190;Prototype;;;1
+366257;366179;Standard;;;1
+366258;366179;Advanced;;;1
+366259;366179;Prototype;;;1
+366260;365996;Equipment;;;0
+366261;366260;Standard;;;1
+366262;366260;Advanced;;;1
+366263;366260;Prototype;;;1
+366264;365997;Equipment;;;0
+366266;366264;Advanced;;;1
+366267;366264;Prototype;;;1
+366268;366191;Standard;;;1
+366269;366191;Advanced;;;1
+366271;366191;Prototype;;;1
+366272;366180;Standard;;;1
+366273;366180;Advanced;;;1
+366274;366180;Prototype;;;1
+366275;365998;Equipment;;;0
+366276;366275;Standard;;;1
+366277;366275;Advanced;;;1
+366278;366275;Prototype;;;1
+366279;366193;Standard;;;1
+366280;366193;Advanced;;;1
+366281;366193;Prototype;;;1
+366282;365999;Equipment;;;0
+366283;366282;Standard;;;1
+366284;366282;Advanced;;;1
+366285;366282;Prototype;;;1
+366286;366194;Standard;;;1
+366287;366194;Advanced;;;1
+366288;366194;Prototype;;;1
+366335;350001;Modules;Modules are interchangeable hardware components that enhance or otherwise alter the functionality of the vehicle or dropsuit they are fitted to.;;0
+366350;354534;Faction Booster Caldari;;;1
+366351;354534;Faction Booster Gallente;;;1
+366352;354534;Faction Booster Minmatar;;;1
